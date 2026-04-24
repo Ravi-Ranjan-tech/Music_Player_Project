@@ -248,53 +248,80 @@
   <audio id="audioPlayer" ontimeupdate="updateProgress()" onended="nextTrack()"></audio>
 
   <script>
-    // ==================== DATA ====================
-    let songs = [
-      { id: 1, title: "Khuda Bhi", artist: "Chillwave Collective", src: "https://github.com/user-attachments/files/27044888/_Khuda.Bhi_.FULL.VIDEO.Song._.Sunny.Leone._.Mohit.Chauhan._.Ek.Paheli.Leela.MP3_128K.mp3", cover: "https://picsum.photos/id/1015/600/600", duration: "3:12" },
-      { id: 2, title: "Midnight Drive", artist: "Neon Pulse", src: "../World Best Ringtone _ Instrumental Ringtone _ Romantic Ringtone _ Popular Instrumental Ringtone(MP3_320K).mp3", cover: "https://picsum.photos/id/201/600/600", duration: "4:05" },
-      { id: 3, title: "Ocean Breeze", artist: "Ambient Waves", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", cover: "https://picsum.photos/id/237/600/600", duration: "2:48" },
-      { id: 4, title: "Electric Soul", artist: "Future Beats", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", cover: "https://picsum.photos/id/870/600/600", duration: "3:55" },
-      { id: 5, title: "Golden Hour", artist: "LoFi Sunset", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3", cover: "https://picsum.photos/id/1016/600/600", duration: "2:30" },
-      { id: 6, title: "World Best Ringtone", artist: "Instrumental Ringtone", src: "../World Best Ringtone _ Instrumental Ringtone _ Romantic Ringtone _ Popular Instrumental Ringtone(MP3_320K).mp3", cover: "https://picsum.photos/id/1020/600/600", duration: "3:20" },
-      { id: 7, title: "Taal Se Taal (DJ NYK Remix)", artist: "Bollywood LoFi", src: "../taal se taal (DJ NYK Remix) _ [Bollywood LoFi_ Chill_ Trap Beats](MP3_320K).mp3", cover: "https://picsum.photos/id/1021/600/600", duration: "3:20" },
-      { id: 8, title: "Sham Bhi Khoob Hay", artist: "Bassboosted", src: "../SHAM BHI KHOOB HAY _---- BASSBOOSTED ----_3D SONG _ DEEP BASS_ REVERB _ OLD IS GOLD _ 90S BOLLYWOOD HITS(MP3_320K).mp3", cover: "https://picsum.photos/id/1022/600/600", duration: "3:20" },
-      { id: 9, title: "Ram Siya Ram", artist: "Slowed Lofi", src: "../Ram Siya Ram - Slowed   Lofi(MP3_320K).mp3", cover: "https://picsum.photos/id/1023/600/600", duration: "3:20" },
-      { id: 10, title: "Radha Ke Man Mohan", artist: "Ringtone Music", src: "../Radha ke man mohan _ringtone music(MP3_70K).mp3", cover: "https://picsum.photos/id/1024/600/600", duration: "1:10" },
-      { id: 11, title: "Bilionera", artist: "Otilia", src: "../Otilia - Bilionera (Official Cantoyo Video)(MP3_128K).mp3", cover: "https://picsum.photos/id/1025/600/600", duration: "3:20" },
-      { id: 12, title: "No Love - Feeling Mashup", artist: "Various Artists", src: "../No Love - Feeling Mashup 2022  ft shubh  Ap Dillon  Jass Manak  Mahesh 128 kbps.mp3", cover: "https://picsum.photos/id/1026/600/600", duration: "3:20" },
-      { id: 13, title: "Galliyan Remix", artist: "Mickey Singh", src: "../Mickey Singh - Galliyan Remix (Moving On) 128 kbps.mp3", cover: "https://picsum.photos/id/1027/600/600", duration: "3:20" },
-      { id: 14, title: "Mann Mera", artist: "LoFi Remake", src: "../Mann Mera  Table No 21  Lofi Remake Shantanu Music  Chill and soothing 128 kbps.mp3", cover: "https://picsum.photos/id/1028/600/600", duration: "3:20" },
-      { id: 15, title: "Mangal Murti Ram Dulare", artist: "Soft Bass Remix", src: "../Mangal Murti Ram dulare _Mangal Murti Raam Dulaare Full Song Dj Soft Bass Remix Full Song(MP3_320K).mp3", cover: "https://picsum.photos/id/1029/600/600", duration: "3:20" },
-      { id: 16, title: "Jo Bhi Kasmein (Remix)", artist: "DJ Sunny", src: "../Jo Bhi Kasmein (Remix) - DJ Sunny _ DJ AKD - Raaz _ Bipasha Basu _ Dino Morea _ Udit Narayan _ Alka(MP3_320K).mp3", cover: "https://picsum.photos/id/1030/600/600", duration: "3:20" },
-      { id: 17, title: "Har Har Shambhu", artist: "Mahadev", src: "../har har shambhu (Lyrics) _ Mahadev New Song _ har har shambhu shiv mahadeva _ Shiv Bhajan _ Mahakaal(MP3_320K).mp3", cover: "https://picsum.photos/id/1031/600/600", duration: "3:20" },
-      { id: 18, title: "Hamdard (Slowed & Reverb)", artist: "Arijit Singh", src: "../Hamdard  Slowed and Reverb (super)  Ek Villain  Arijit Singh  Mithoon 128 kbps.mp3", cover: "https://picsum.photos/id/1032/600/600", duration: "3:20" },
-      { id: 19, title: "Falak Tak Chal", artist: "Udit Narayan", src: "../Falak Tak Chal  Udit Narayan  Mahalakshmi Iyer  GM Music 128 kbps.mp3", cover: "https://picsum.photos/id/1033/600/600", duration: "3:20" },
-      { id: 20, title: "Dekh Lena", artist: "Arijit Singh", src: "../Dekh Lena - Arijit Singh Song  Slowed And Reverb Lofi Mix 128 kbps.mp3", cover: "https://picsum.photos/id/1034/600/600", duration: "3:20" },
-      { id: 21, title: "Best Of Monsoon", artist: "Rain Drive", src: "../Best Of Mansoon ❣️  i20 Sports Highway Rain Drive  Evening Rain Romant 128 kbps.mp3", cover: "https://picsum.photos/id/1035/600/600", duration: "3:20" },
-      { id: 22, title: "Beautiful Instrumental Ringtone", artist: "Humnava Mere", src: "../Beautiful Instrumental Ringtone _ Humnava Mere Instrumental Ringtone _ Best Mobile Ringtone _ Call(MP3_128K).mp3", cover: "https://picsum.photos/id/1036/600/600", duration: "3:20" },
-      { id: 23, title: "Aziyat (Slowed Reverb)", artist: "Lo-Fi Music", src: "../AZIYAT  [SLOWED   REVERB] - Toh kya hua tu mera nahi _ _Lo-Fi_Music _ _Lofi Songs _  Sad_Songs_2021(MP3_320K).mp3", cover: "https://picsum.photos/id/1037/600/600", duration: "3:20" },
-      { id: 24, title: "Aisa Diwana Hua Ye Dil", artist: "Bassboosted", src: "../Aisa diwana hua ye dil _---- BASSBOOSTED ----_ deep bass_ old song bassboosted_ indian bassboosted_ req(MP3_320K).mp3", cover: "https://picsum.photos/id/1038/600/600", duration: "3:20" },
-      { id: 25, title: "Airtel Ringtone DJ Trap Remix", artist: "Supreb Creation", src: "../Airtel ringtone DJ Trap Remix bass boosted 2021 _ Supreb Creation(MP3_320K).mp3", cover: "https://picsum.photos/id/1039/600/600", duration: "3:20" },
-      { id: 26, title: "Airtel Instrumental (Classical Style)", artist: "Anunand S", src: "../Airtel Instrumental _ Flute _ Classical Style _ Anunand S _ Best Ringtone 2020 _ Link in Description(MP3_320K).mp3", cover: "https://picsum.photos/id/1040/600/600", duration: "3:20" },
-      { id: 27, title: "Airtel Instrumental Ringtone HD", artist: "Ringtone", src: "../Airtel Instrumental Ringtone _ HD _ Use --Headphones -- _(MP3_320K).mp3", cover: "https://picsum.photos/id/1041/600/600", duration: "3:20" },
-      { id: 28, title: "Aankhon Mein Base Ho Tum (Remix)", artist: "DJ Nirmal Bahrain", src: "../Aankhon Mein Base Ho Tum (Remix) - DJ Nirmal Bahrain _Sunil Shetty_ Naseeruddin Shah special_(MP3_320K).mp3", cover: "https://picsum.photos/id/1042/600/600", duration: "3:20" }
-    ];
-
+    // ==================== 🎵 EXTRACTED MUSIC SOURCE LINKS 🎵 ====================
+    // All audio URLs extracted from the provided GitHub attachments and mapped to songs
+    const SONG_URLS = {
+      "Aankhon Mein Base Ho Tum (Remix)": "https://github.com/user-attachments/files/27045123/Aankhon.Mein.Base.Ho.Tum.Remix.-.DJ.Nirmal.Bahrain._Sunil.Shetty_.Naseeruddin.Shah.special_.MP3_320K.mp3",
+      "World Best Ringtone": "https://github.com/user-attachments/files/27045326/World.Best.Ringtone._.Instrumental.Ringtone._.Romantic.Ringtone._.Popular.Instrumental.Ringtone.MP3_320K.mp3",
+      "Taal Se Taal (DJ NYK Remix)": "https://github.com/user-attachments/files/27045321/taal.se.taal.DJ.NYK.Remix._.Bollywood.LoFi_.Chill_.Trap.Beats.MP3_320K.mp3",
+      "Sham Bhi Khoob Hay": "https://github.com/user-attachments/files/27045316/SHAM.BHI.KHOOB.HAY._----.BASSBOOSTED.----_3D.SONG._.DEEP.BASS_.REVERB._.OLD.IS.GOLD._.90S.BOLLYWOOD.HITS.MP3_320K.mp3",
+      "Ram Siya Ram": "https://github.com/user-attachments/files/27045308/Ram.Siya.Ram.-.Slowed.Lofi.MP3_320K.mp3",
+      "Radha Ke Man Mohan": "https://github.com/user-attachments/files/27045307/Radha.ke.man.mohan._ringtone.music.MP3_70K.mp3",
+      "Bilionera": "https://github.com/user-attachments/files/27045305/Otilia.-.Bilionera.Official.Cantoyo.Video.MP3_128K.mp3",
+      "No Love - Feeling Mashup": "https://github.com/user-attachments/files/27045304/No.Love.-.Feeling.Mashup.2022.ft.shubh.Ap.Dillon.Jass.Manak.Mahesh.128.kbps.mp3",
+      "Galliyan Remix": "https://github.com/user-attachments/files/27045298/Mickey.Singh.-.Galliyan.Remix.Moving.On.128.kbps.mp3",
+      "Mann Mera": "https://github.com/user-attachments/files/27045292/Mann.Mera.Table.No.21.Lofi.Remake.Shantanu.Music.Chill.and.soothing.128.kbps.mp3",
+      "Mangal Murti Ram Dulare": "https://github.com/user-attachments/files/27045284/Mangal.Murti.Ram.dulare._Mangal.Murti.Raam.Dulaare.Full.Song.Dj.Soft.Bass.Remix.Full.Song.MP3_320K.mp3",
+      "Jo Bhi Kasmein (Remix)": "https://github.com/user-attachments/files/27045280/Jo.Bhi.Kasmein.Remix.-.DJ.Sunny._.DJ.AKD.-.Raaz._.Bipasha.Basu._.Dino.Morea._.Udit.Narayan._.Alka.MP3_320K.mp3",
+      "Har Har Shambhu": "https://github.com/user-attachments/files/27045273/har.har.shambhu.Lyrics._.Mahadev.New.Song._.har.har.shambhu.shiv.mahadeva._.Shiv.Bhajan._.Mahakaal.MP3_320K.mp3",
+      "Hamdard (Slowed & Reverb)": "https://github.com/user-attachments/files/27045268/Hamdard.Slowed.and.Reverb.super.Ek.Villain.Arijit.Singh.Mithoon.128.kbps.mp3",
+      "Falak Tak Chal": "https://github.com/user-attachments/files/27045260/Falak.Tak.Chal.Udit.Narayan.Mahalakshmi.Iyer.GM.Music.128.kbps.mp3",
+      "Dekh Lena": "https://github.com/user-attachments/files/27045257/Dekh.Lena.-.Arijit.Singh.Song.Slowed.And.Reverb.Lofi.Mix.128.kbps.mp3",
+      "Best Of Monsoon": "https://github.com/user-attachments/files/27045255/Best.Of.Mansoon.i20.Sports.Highway.Rain.Drive.Evening.Rain.Romant.128.kbps.mp3",
+      "Beautiful Instrumental Ringtone": "https://github.com/user-attachments/files/27045254/Beautiful.Instrumental.Ringtone._.Humnava.Mere.Instrumental.Ringtone._.Best.Mobile.Ringtone._.Call.MP3_128K.mp3",
+      "Aziyat (Slowed Reverb)": "https://github.com/user-attachments/files/27045219/AZIYAT.SLOWED.REVERB.-.Toh.kya.hua.tu.mera.nahi._._Lo-Fi_Music._._Lofi.Songs._.Sad_Songs_2021.MP3_320K.mp3",
+      "Aisa Diwana Hua Ye Dil": "https://github.com/user-attachments/files/27045173/Aisa.diwana.hua.ye.dil._----.BASSBOOSTED.----_.deep.bass_.old.song.bassboosted_.indian.bassboosted_.req.MP3_320K.mp3",
+      "Airtel Ringtone DJ Trap Remix": "https://github.com/user-attachments/files/27045167/Airtel.ringtone.DJ.Trap.Remix.bass.boosted.2021._.Supreb.Creation.MP3_320K.mp3",
+      "Airtel Instrumental (Classical Style)": "https://github.com/user-attachments/files/27045151/Airtel.Instrumental._.Flute._.Classical.Style._.Anunand.S._.Best.Ringtone.2020._.Link.in.Description.MP3_320K.mp3",
+      "Airtel Instrumental Ringtone HD": "https://github.com/user-attachments/files/27045161/Airtel.Instrumental.Ringtone._.HD._.Use.--Headphones.--._.MP3_320K.mp3"
+    };
     
-
+    // Complete song catalog with replaced src links (extracted from GitHub)
+    let songs = [
+      { id: 1, title: "Khuda Bhi", artist: "Chillwave Collective", src: SONG_URLS["Khuda Bhi"] || "../_Khuda Bhi_ FULL VIDEO Song _ Sunny Leone _ Mohit Chauhan _ Ek Paheli Leela(MP3_128K).mp3", cover: "https://picsum.photos/id/1015/600/600", duration: "3:12" },
+      { id: 2, title: "World Best Ringtone", artist: "Instrumental Ringtone", src: SONG_URLS["World Best Ringtone"], cover: "https://picsum.photos/id/201/600/600", duration: "3:20" },
+      { id: 3, title: "Taal Se Taal (DJ NYK Remix)", artist: "Bollywood LoFi", src: SONG_URLS["Taal Se Taal (DJ NYK Remix)"], cover: "https://picsum.photos/id/1021/600/600", duration: "3:20" },
+      { id: 4, title: "Sham Bhi Khoob Hay", artist: "Bassboosted", src: SONG_URLS["Sham Bhi Khoob Hay"], cover: "https://picsum.photos/id/1022/600/600", duration: "3:20" },
+      { id: 5, title: "Ram Siya Ram", artist: "Slowed Lofi", src: SONG_URLS["Ram Siya Ram"], cover: "https://picsum.photos/id/1023/600/600", duration: "3:20" },
+      { id: 6, title: "Radha Ke Man Mohan", artist: "Ringtone Music", src: SONG_URLS["Radha Ke Man Mohan"], cover: "https://picsum.photos/id/1024/600/600", duration: "1:10" },
+      { id: 7, title: "Bilionera", artist: "Otilia", src: SONG_URLS["Bilionera"], cover: "https://picsum.photos/id/1025/600/600", duration: "3:20" },
+      { id: 8, title: "No Love - Feeling Mashup", artist: "Various Artists", src: SONG_URLS["No Love - Feeling Mashup"], cover: "https://picsum.photos/id/1026/600/600", duration: "3:20" },
+      { id: 9, title: "Galliyan Remix", artist: "Mickey Singh", src: SONG_URLS["Galliyan Remix"], cover: "https://picsum.photos/id/1027/600/600", duration: "3:20" },
+      { id: 10, title: "Mann Mera", artist: "LoFi Remake", src: SONG_URLS["Mann Mera"], cover: "https://picsum.photos/id/1028/600/600", duration: "3:20" },
+      { id: 11, title: "Mangal Murti Ram Dulare", artist: "Soft Bass Remix", src: SONG_URLS["Mangal Murti Ram Dulare"], cover: "https://picsum.photos/id/1029/600/600", duration: "3:20" },
+      { id: 12, title: "Jo Bhi Kasmein (Remix)", artist: "DJ Sunny", src: SONG_URLS["Jo Bhi Kasmein (Remix)"], cover: "https://picsum.photos/id/1030/600/600", duration: "3:20" },
+      { id: 13, title: "Har Har Shambhu", artist: "Mahadev", src: SONG_URLS["Har Har Shambhu"], cover: "https://picsum.photos/id/1031/600/600", duration: "3:20" },
+      { id: 14, title: "Hamdard (Slowed & Reverb)", artist: "Arijit Singh", src: SONG_URLS["Hamdard (Slowed & Reverb)"], cover: "https://picsum.photos/id/1032/600/600", duration: "3:20" },
+      { id: 15, title: "Falak Tak Chal", artist: "Udit Narayan", src: SONG_URLS["Falak Tak Chal"], cover: "https://picsum.photos/id/1033/600/600", duration: "3:20" },
+      { id: 16, title: "Dekh Lena", artist: "Arijit Singh", src: SONG_URLS["Dekh Lena"], cover: "https://picsum.photos/id/1034/600/600", duration: "3:20" },
+      { id: 17, title: "Best Of Monsoon", artist: "Rain Drive", src: SONG_URLS["Best Of Monsoon"], cover: "https://picsum.photos/id/1035/600/600", duration: "3:20" },
+      { id: 18, title: "Beautiful Instrumental Ringtone", artist: "Humnava Mere", src: SONG_URLS["Beautiful Instrumental Ringtone"], cover: "https://picsum.photos/id/1036/600/600", duration: "3:20" },
+      { id: 19, title: "Aziyat (Slowed Reverb)", artist: "Lo-Fi Music", src: SONG_URLS["Aziyat (Slowed Reverb)"], cover: "https://picsum.photos/id/1037/600/600", duration: "3:20" },
+      { id: 20, title: "Aisa Diwana Hua Ye Dil", artist: "Bassboosted", src: SONG_URLS["Aisa Diwana Hua Ye Dil"], cover: "https://picsum.photos/id/1038/600/600", duration: "3:20" },
+      { id: 21, title: "Airtel Ringtone DJ Trap Remix", artist: "Supreb Creation", src: SONG_URLS["Airtel Ringtone DJ Trap Remix"], cover: "https://picsum.photos/id/1039/600/600", duration: "3:20" },
+      { id: 22, title: "Airtel Instrumental (Classical Style)", artist: "Anunand S", src: SONG_URLS["Airtel Instrumental (Classical Style)"], cover: "https://picsum.photos/id/1040/600/600", duration: "3:20" },
+      { id: 23, title: "Airtel Instrumental Ringtone HD", artist: "Ringtone", src: SONG_URLS["Airtel Instrumental Ringtone HD"], cover: "https://picsum.photos/id/1041/600/600", duration: "3:20" },
+      { id: 24, title: "Aankhon Mein Base Ho Tum (Remix)", artist: "DJ Nirmal Bahrain", src: SONG_URLS["Aankhon Mein Base Ho Tum (Remix)"], cover: "https://picsum.photos/id/1042/600/600", duration: "3:20" }
+    ];
+    
+    // Add extra songs to match full library elegance (missing Midnight Drive etc but keep consistent)
+    songs.push({ id: 25, title: "Midnight Drive", artist: "Neon Pulse", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", cover: "https://picsum.photos/id/1015/600/600", duration: "4:05" });
+    songs.push({ id: 26, title: "Ocean Breeze", artist: "Ambient Waves", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", cover: "https://picsum.photos/id/237/600/600", duration: "2:48" });
+    songs.push({ id: 27, title: "Electric Soul", artist: "Future Beats", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3", cover: "https://picsum.photos/id/870/600/600", duration: "3:55" });
+    songs.push({ id: 28, title: "Golden Hour", artist: "LoFi Sunset", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", cover: "https://picsum.photos/id/1016/600/600", duration: "2:30" });
+    
     let currentSongIndex = 0;
     let isPlaying = false;
     let isShuffle = false;
-    let repeatMode = 0; // 0=off, 1=all, 2=one
+    let repeatMode = 0;
     let favorites = [];
     let recentlyPlayed = [];
     let queue = [];
-    let currentSpeed = 1.0;
     let isMuted = false;
     let lastVolume = 0.75;
     let isDarkMode = true;
     let isMini = false;
-
+    
     const audio = document.getElementById('audioPlayer');
     const progressBar = document.getElementById('progressBar');
     const currentTimeEl = document.getElementById('currentTime');
@@ -310,357 +337,76 @@
     const ctx = visualizerCanvas.getContext('2d');
     const miniPlayer = document.getElementById('miniPlayer');
     const mainPlayer = document.getElementById('mainPlayer');
-
     let animationFrame;
     let bars = new Array(60).fill(10);
-
-    // Fake lyrics for demo
-    const demoLyrics = [
-      "Floating through the neon lights...",
-      "Heartbeat syncing with the bass...",
-      "Lost in this endless dream...",
-      "We rise above the city glow...",
-      "Feel the rhythm take control..."
-    ];
-
-    function showToast(message) {
+    const demoLyrics = ["🎵 Floating through neon lights...", "Heartbeat syncing with the bass...", "Lost in this endless dream...", "We rise above the city glow...", "Feel the rhythm take control..."];
+    
+    function showToast(msg) {
       const toast = document.createElement('div');
       toast.className = 'toast fixed bottom-20 left-1/2 -translate-x-1/2 bg-zinc-800 text-white px-8 py-4 rounded-3xl shadow-2xl flex items-center gap-3 z-[200]';
-      toast.innerHTML = `<i class="fa-solid fa-check-circle text-cyan-400"></i> ${message}`;
+      toast.innerHTML = `<i class="fa-solid fa-check-circle text-cyan-400"></i> ${msg}`;
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 2800);
     }
-
+    
     function loadSong(index) {
       currentSongIndex = Math.max(0, Math.min(index, songs.length-1));
       const song = songs[currentSongIndex];
-      audio.src = encodeURI(song.src);
+      if (song.src) audio.src = song.src;
       playerTitle.textContent = song.title;
       playerArtist.textContent = song.artist;
       playerCover.src = song.cover;
       document.getElementById('miniCover').src = song.cover;
       document.getElementById('miniTitle').textContent = song.title;
-
       updatePlayingHighlight();
-      addToRecentlyPlayed(song);
-      if (!queue.includes(song)) queue.push(song);
-      renderQueue();
-    }
-
-    function togglePlay() {
-      if (!audio.src) loadSong(0);
-      if (isPlaying) {
-        audio.pause();
-        playBtn.innerHTML = '▶';
-      } else {
-        audio.play();
-        playBtn.innerHTML = '❚❚';
-      }
-      isPlaying = !isPlaying;
-      if (isPlaying) startVisualizer();
-      else cancelAnimationFrame(animationFrame);
-    }
-
-    function nextTrack() {
-      if (repeatMode === 2) { audio.currentTime = 0; audio.play(); return; }
-      let next = isShuffle ? Math.floor(Math.random()*songs.length) : currentSongIndex + 1;
-      if (next >= songs.length) next = 0;
-      loadSong(next);
-      if (isPlaying) audio.play();
-    }
-
-    function prevTrack() {
-      let prev = isShuffle ? Math.floor(Math.random()*songs.length) : currentSongIndex - 1;
-      if (prev < 0) prev = songs.length - 1;
-      loadSong(prev);
-      if (isPlaying) audio.play();
-    }
-
-    function updateProgress() {
-      if (!audio.duration) return;
-      progressBar.value = (audio.currentTime / audio.duration) * 100;
-      currentTimeEl.textContent = formatTime(audio.currentTime);
-      durationEl.textContent = formatTime(audio.duration);
-    }
-
-    function seekAudio() {
-      audio.currentTime = (progressBar.value / 100) * audio.duration;
-    }
-
-    function formatTime(secs) {
-      const m = Math.floor(secs / 60);
-      const s = Math.floor(secs % 60);
-      return `${m}:${s<10?'0':''}${s}`;
-    }
-
-    function changeVolume() {
-      audio.volume = volumeSlider.value / 100;
-      lastVolume = audio.volume;
-      isMuted = false;
-      updateVolumeIcon();
-    }
-
-    function toggleMute() {
-      if (isMuted) {
-        audio.volume = lastVolume;
-        volumeSlider.value = lastVolume * 100;
-      } else {
-        lastVolume = audio.volume;
-        audio.volume = 0;
-        volumeSlider.value = 0;
-      }
-      isMuted = !isMuted;
-      updateVolumeIcon();
-    }
-
-    function updateVolumeIcon() {
-      volumeIcon.className = audio.volume === 0 ? "fa-solid fa-volume-xmark cursor-pointer text-2xl" : 
-                              audio.volume < 0.4 ? "fa-solid fa-volume-low cursor-pointer text-2xl" : 
-                              "fa-solid fa-volume-high cursor-pointer text-2xl";
-    }
-
-    function toggleShuffle() {
-      isShuffle = !isShuffle;
-      document.getElementById('shuffleBtn').style.color = isShuffle ? '#67e8f9' : '';
-      showToast(isShuffle ? "Shuffle Enabled" : "Shuffle Disabled");
-    }
-
-    function toggleRepeat() {
-      repeatMode = (repeatMode + 1) % 3;
-      const colors = ['', '#67e8f9', '#f472b6'];
-      document.getElementById('repeatBtn').style.color = colors[repeatMode];
-      showToast(["Repeat Off", "Repeat All", "Repeat One"][repeatMode]);
-    }
-
-    function changeEqualizer() {
-      const presets = ["Bass", "Treble", "Chill", "Party"];
-      let current = document.getElementById('eqBtn').textContent;
-      let idx = presets.indexOf(current);
-      let next = presets[(idx + 1) % 4];
-      document.getElementById('eqBtn').textContent = next;
-      
-      if (next === "Party") audio.playbackRate = 1.15;
-      else if (next === "Chill") audio.playbackRate = 0.92;
-      else audio.playbackRate = 1.0;
-      
-      showToast(next + " Equalizer Applied");
-    }
-
-    function toggleFavorite() {
-      const song = songs[currentSongIndex];
-      const idx = favorites.findIndex(s => s.id === song.id);
-      if (idx > -1) {
-        favorites.splice(idx, 1);
-        favBtn.innerHTML = '♡';
-      } else {
-        favorites.push(song);
-        favBtn.innerHTML = '❤️';
-        showToast("Added to Favorites");
-      }
-      if (!document.getElementById('favoritesTab').classList.contains('hidden')) renderFavorites();
-    }
-
-    function addToRecentlyPlayed(song) {
-      recentlyPlayed = recentlyPlayed.filter(s => s.id !== song.id);
-      recentlyPlayed.unshift(song);
+      if (!recentlyPlayed.some(s => s.id === song.id)) recentlyPlayed.unshift(song);
       if (recentlyPlayed.length > 8) recentlyPlayed.pop();
       renderRecentlyPlayed();
-    }
-
-    function addToQueue(song) {
-      if (!queue.some(s => s.id === song.id)) {
-        queue.push(song);
-        renderQueue();
-        showToast("Added to Queue");
-      }
-    }
-
-    function renderQueue() {
-      const container = document.getElementById('queueList');
-      container.innerHTML = '';
-      queue.forEach((song, i) => {
-        const div = document.createElement('div');
-        div.className = `flex items-center gap-4 p-4 bg-zinc-900 rounded-3xl ${i === 0 ? 'playing' : ''}`;
-        div.innerHTML = `
-          <img src="${song.cover}" class="w-14 h-14 rounded-2xl object-cover"/>
-          <div class="flex-1">
-            <div class="font-medium">${song.title}</div>
-            <div class="text-sm text-zinc-400">${song.artist}</div>
-          </div>
-          <button onclick="playFromQueue(${i}); event.stopImmediatePropagation()" class="px-6 py-2 bg-cyan-400 text-black rounded-2xl text-sm font-medium">Play</button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function playFromQueue(index) {
-      const song = queue[index];
-      const realIndex = songs.findIndex(s => s.id === song.id);
-      playSong(realIndex);
-    }
-
-    function clearQueue() {
-      queue = [];
+      if (!queue.some(s => s.id === song.id)) queue.push(song);
       renderQueue();
-      showToast("Queue Cleared");
     }
-
-    // Render functions (same as before, but with add to queue button)
-    function createSongElement(song) {
-      const div = document.createElement('div');
-      div.className = `song-card bg-zinc-900 rounded-3xl overflow-hidden cursor-pointer group`;
-      div.innerHTML = `
-        <div class="relative">
-          <img src="${song.cover}" class="w-full aspect-square object-cover"/>
-          <div class="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition">
-            <button onclick="event.stopImmediatePropagation(); addToQueue(songs[${songs.indexOf(song)}]);" class="w-10 h-10 bg-white/90 hover:bg-white rounded-2xl flex items-center justify-center shadow">➕</button>
-            <button onclick="event.stopImmediatePropagation(); playSong(${songs.indexOf(song)})" class="w-10 h-10 bg-cyan-400 rounded-2xl flex items-center justify-center shadow">▶</button>
-          </div>
-        </div>
-        <div class="p-5">
-          <div class="font-semibold truncate">${song.title}</div>
-          <div class="text-sm text-zinc-400 truncate">${song.artist}</div>
-        </div>
-      `;
-      div.onclick = () => playSong(songs.indexOf(song));
-      return div;
+    
+    function togglePlay() {
+      if (!audio.src) loadSong(0);
+      if (isPlaying) { audio.pause(); playBtn.innerHTML = '▶'; } 
+      else { audio.play().catch(e => showToast("⚠️ Playback error, check network")); playBtn.innerHTML = '❚❚'; }
+      isPlaying = !isPlaying;
+      if (isPlaying) startVisualizer(); else cancelAnimationFrame(animationFrame);
     }
-
-    function renderFeatured() {
-      const container = document.getElementById('featuredGrid');
-      container.innerHTML = '';
-      songs.forEach(song => container.appendChild(createSongElement(song)));
-    }
-
-    function renderRecentlyPlayed() {
-      const container = document.getElementById('recentGrid');
-      container.innerHTML = '';
-      recentlyPlayed.forEach(song => container.appendChild(createSongElement(song)));
-    }
-
-    function renderLibrary() { 
-      const container = document.getElementById('libraryList');
-      container.innerHTML = '';
-      songs.forEach(song => container.appendChild(createSongElement(song)));
-    }
-
-    function renderFavorites() {
-      const container = document.getElementById('favoritesList');
-      container.innerHTML = favorites.length ? '' : `<p class="col-span-full text-center py-20 text-zinc-400">No favorites yet. Heart some songs!</p>`;
-      favorites.forEach(song => container.appendChild(createSongElement(song)));
-    }
-
-    function playSong(index) {
-      loadSong(index);
-      audio.play().then(() => {
-        isPlaying = true;
-        playBtn.innerHTML = '❚❚';
-        startVisualizer();
-      }).catch(() => {
-        showToast('Unable to play this song. Check the file path.');
-      });
-    }
-
-    function updatePlayingHighlight() {
-      renderLibrary();
-      renderFavorites();
-    }
-
-    function filterSongs() {
-      const term = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = songs.filter(s => s.title.toLowerCase().includes(term) || s.artist.toLowerCase().includes(term));
-      const activeTab = document.querySelector('.tab:not(.hidden)');
-      if (activeTab && activeTab.id === 'libraryTab') {
-        const container = document.getElementById('libraryList');
-        container.innerHTML = '';
-        filtered.forEach(song => container.appendChild(createSongElement(song)));
-      }
-    }
-
-    function switchTab(tab) {
-      document.querySelectorAll('.nav-item').forEach((el, i) => el.classList.toggle('active', i === tab));
-      document.querySelectorAll('.tab').forEach(t => t.classList.add('hidden'));
-      if (tab === 0) document.getElementById('homeTab').classList.remove('hidden');
-      else if (tab === 1) { document.getElementById('libraryTab').classList.remove('hidden'); renderLibrary(); }
-      else if (tab === 2) { document.getElementById('favoritesTab').classList.remove('hidden'); renderFavorites(); }
-      else if (tab === 3) { document.getElementById('queueTab').classList.remove('hidden'); renderQueue(); }
-    }
-
-    function createPlaylist() {
-      const name = prompt("Playlist name?");
-      if (name) showToast(`Playlist "${name}" created!`);
-    }
-
-    function toggleTheme() {
-      isDarkMode = !isDarkMode;
-      document.body.classList.toggle('dark', isDarkMode);
-      document.body.classList.toggle('light', !isDarkMode);
-      document.getElementById('themeIcon').classList.toggle('fa-moon', isDarkMode);
-      document.getElementById('themeIcon').classList.toggle('fa-sun', !isDarkMode);
-    }
-
-    function toggleMiniPlayer() {
-      isMini = !isMini;
-      mainPlayer.classList.toggle('hidden', isMini);
-      miniPlayer.classList.toggle('hidden', !isMini);
-    }
-
-    function showLyrics() {
-      const modal = document.getElementById('lyricsModal');
-      const textContainer = document.getElementById('lyricsText');
-      modal.classList.remove('hidden');
-      let i = 0;
-      textContainer.innerHTML = demoLyrics[0];
-      const interval = setInterval(() => {
-        i = (i + 1) % demoLyrics.length;
-        textContainer.innerHTML = demoLyrics[i];
-      }, 2200);
-      modal.dataset.interval = interval;
-    }
-
-    function hideLyrics() {
-      const modal = document.getElementById('lyricsModal');
-      clearInterval(modal.dataset.interval);
-      modal.classList.add('hidden');
-    }
-
-    // Visualizer
-    function startVisualizer() {
-      cancelAnimationFrame(animationFrame);
-      function draw() {
-        ctx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
-        const barWidth = visualizerCanvas.width / bars.length * 0.75;
-        for (let i = 0; i < bars.length; i++) {
-          bars[i] = 10 + Math.random() * 38 * (isPlaying ? 1 : 0.3);
-          const h = bars[i];
-          ctx.fillStyle = `hsl(${200 + i*2}, 95%, 68%)`;
-          ctx.fillRect(i * (visualizerCanvas.width / bars.length), visualizerCanvas.height - h, barWidth, h);
-        }
-        animationFrame = requestAnimationFrame(draw);
-      }
-      draw();
-    }
-
-    // Keyboard
-    document.addEventListener('keydown', e => {
-      if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
-      if (e.code === 'ArrowRight') audio.currentTime += 10;
-      if (e.code === 'ArrowLeft') audio.currentTime -= 10;
-      if (e.code === 'ArrowUp') { volumeSlider.value = Math.min(100, +volumeSlider.value + 10); changeVolume(); }
-      if (e.code === 'ArrowDown') { volumeSlider.value = Math.max(0, +volumeSlider.value - 10); changeVolume(); }
-    });
-
-    // Init
-    function init() {
-      renderFeatured();
-      renderRecentlyPlayed();
-      switchTab(0);
-      loadSong(0);
-      audio.volume = 0.75;
-      volumeSlider.value = 75;
-      showToast("Welcome to BeatFlow! 🎵");
-    }
-
+    function nextTrack() { if (repeatMode === 2) { audio.currentTime = 0; audio.play(); return; } let next = isShuffle ? Math.floor(Math.random()*songs.length) : currentSongIndex + 1; if (next >= songs.length) next = 0; loadSong(next); if (isPlaying) audio.play(); }
+    function prevTrack() { let prev = isShuffle ? Math.floor(Math.random()*songs.length) : currentSongIndex - 1; if (prev < 0) prev = songs.length - 1; loadSong(prev); if (isPlaying) audio.play(); }
+    function updateProgress() { if (!audio.duration) return; progressBar.value = (audio.currentTime / audio.duration) * 100; currentTimeEl.textContent = formatTime(audio.currentTime); durationEl.textContent = formatTime(audio.duration); }
+    function seekAudio() { audio.currentTime = (progressBar.value / 100) * audio.duration; }
+    function formatTime(secs) { if(isNaN(secs)) return "0:00"; const m = Math.floor(secs / 60); const s = Math.floor(secs % 60); return `${m}:${s<10?'0':''}${s}`; }
+    function changeVolume() { audio.volume = volumeSlider.value / 100; lastVolume = audio.volume; isMuted = false; updateVolumeIcon(); }
+    function toggleMute() { if(isMuted) { audio.volume = lastVolume; volumeSlider.value = lastVolume * 100; } else { lastVolume = audio.volume; audio.volume = 0; volumeSlider.value = 0; } isMuted = !isMuted; updateVolumeIcon(); }
+    function updateVolumeIcon() { volumeIcon.className = audio.volume === 0 ? "fa-solid fa-volume-xmark cursor-pointer text-2xl" : audio.volume < 0.4 ? "fa-solid fa-volume-low cursor-pointer text-2xl" : "fa-solid fa-volume-high cursor-pointer text-2xl"; }
+    function toggleShuffle() { isShuffle = !isShuffle; document.getElementById('shuffleBtn').style.color = isShuffle ? '#67e8f9' : ''; showToast(isShuffle ? "Shuffle On" : "Shuffle Off"); }
+    function toggleRepeat() { repeatMode = (repeatMode + 1) % 3; const colors = ['', '#67e8f9', '#f472b6']; document.getElementById('repeatBtn').style.color = colors[repeatMode]; showToast(["Repeat Off","Repeat All","Repeat One"][repeatMode]); }
+    function changeEqualizer() { const presets = ["Bass","Treble","Chill","Party"]; let current = document.getElementById('eqBtn').textContent; let idx = presets.indexOf(current); let next = presets[(idx+1)%4]; document.getElementById('eqBtn').textContent = next; audio.playbackRate = next === "Party" ? 1.15 : next === "Chill" ? 0.92 : 1.0; showToast(next+" EQ Active"); }
+    function toggleFavorite() { const song = songs[currentSongIndex]; const idx = favorites.findIndex(s => s.id === song.id); if(idx > -1) { favorites.splice(idx,1); favBtn.innerHTML = '♡'; } else { favorites.push(song); favBtn.innerHTML = '❤️'; showToast("❤️ Added to Favorites"); } if(!document.getElementById('favoritesTab').classList.contains('hidden')) renderFavorites(); }
+    function addToRecentlyPlayed(song) { recentlyPlayed = recentlyPlayed.filter(s => s.id !== song.id); recentlyPlayed.unshift(song); if(recentlyPlayed.length > 8) recentlyPlayed.pop(); renderRecentlyPlayed(); }
+    function addToQueue(song) { if(!queue.some(s => s.id === song.id)) { queue.push(song); renderQueue(); showToast("➕ Added to Queue"); } }
+    function renderQueue() { const container = document.getElementById('queueList'); container.innerHTML = ''; queue.forEach((song,i) => { const div = document.createElement('div'); div.className = `flex items-center gap-4 p-4 bg-zinc-900 rounded-3xl ${i===currentSongIndex ? 'playing' : ''}`; div.innerHTML = `<img src="${song.cover}" class="w-14 h-14 rounded-2xl object-cover"/><div class="flex-1"><div class="font-medium">${song.title}</div><div class="text-sm text-zinc-400">${song.artist}</div></div><button onclick="playFromQueue(${i}); event.stopImmediatePropagation()" class="px-6 py-2 bg-cyan-400 text-black rounded-2xl text-sm font-medium">Play</button>`; container.appendChild(div); }); }
+    function playFromQueue(index) { const song = queue[index]; const realIndex = songs.findIndex(s => s.id === song.id); if(realIndex !== -1) loadSong(realIndex); if(isPlaying) audio.play(); }
+    function clearQueue() { queue = []; renderQueue(); showToast("Queue cleared"); }
+    function createSongElement(song) { const div = document.createElement('div'); div.className = `song-card bg-zinc-900 rounded-3xl overflow-hidden cursor-pointer group`; div.innerHTML = `<div class="relative"><img src="${song.cover}" class="w-full aspect-square object-cover"/><div class="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition"><button onclick="event.stopImmediatePropagation(); addToQueue(songs[${songs.indexOf(song)}]);" class="w-10 h-10 bg-white/90 hover:bg-white rounded-2xl flex items-center justify-center shadow">➕</button><button onclick="event.stopImmediatePropagation(); playSong(${songs.indexOf(song)})" class="w-10 h-10 bg-cyan-400 rounded-2xl flex items-center justify-center shadow">▶</button></div></div><div class="p-5"><div class="font-semibold truncate">${song.title}</div><div class="text-sm text-zinc-400 truncate">${song.artist}</div></div>`; div.onclick = () => playSong(songs.indexOf(song)); return div; }
+    function renderFeatured() { const container = document.getElementById('featuredGrid'); container.innerHTML = ''; songs.forEach(song => container.appendChild(createSongElement(song))); }
+    function renderRecentlyPlayed() { const container = document.getElementById('recentGrid'); container.innerHTML = ''; recentlyPlayed.forEach(song => container.appendChild(createSongElement(song))); }
+    function renderLibrary() { const container = document.getElementById('libraryList'); container.innerHTML = ''; songs.forEach(song => container.appendChild(createSongElement(song))); }
+    function renderFavorites() { const container = document.getElementById('favoritesList'); container.innerHTML = favorites.length ? '' : `<p class="col-span-full text-center py-20 text-zinc-400">No favorites yet. Heart some songs!</p>`; favorites.forEach(song => container.appendChild(createSongElement(song))); }
+    function playSong(index) { loadSong(index); audio.play().then(() => { isPlaying = true; playBtn.innerHTML = '❚❚'; startVisualizer(); }).catch(()=>showToast('Playback not possible, check file or network')); }
+    function updatePlayingHighlight() { renderLibrary(); renderFavorites(); }
+    function filterSongs() { const term = document.getElementById('searchInput').value.toLowerCase(); const filtered = songs.filter(s => s.title.toLowerCase().includes(term) || s.artist.toLowerCase().includes(term)); const activeTab = document.querySelector('.tab:not(.hidden)'); if(activeTab && activeTab.id === 'libraryTab') { const container = document.getElementById('libraryList'); container.innerHTML = ''; filtered.forEach(song => container.appendChild(createSongElement(song))); } }
+    function switchTab(tab) { document.querySelectorAll('.nav-item').forEach((el,i)=>el.classList.toggle('active', i===tab)); document.querySelectorAll('.tab').forEach(t=>t.classList.add('hidden')); if(tab===0) document.getElementById('homeTab').classList.remove('hidden'); else if(tab===1) { document.getElementById('libraryTab').classList.remove('hidden'); renderLibrary(); } else if(tab===2) { document.getElementById('favoritesTab').classList.remove('hidden'); renderFavorites(); } else if(tab===3) { document.getElementById('queueTab').classList.remove('hidden'); renderQueue(); } }
+    function createPlaylist() { const name = prompt("Playlist name?"); if(name) showToast(`✨ "${name}" created!`); }
+    function toggleTheme() { isDarkMode = !isDarkMode; document.body.classList.toggle('dark', isDarkMode); document.body.classList.toggle('light', !isDarkMode); document.getElementById('themeIcon').classList.toggle('fa-moon', isDarkMode); document.getElementById('themeIcon').classList.toggle('fa-sun', !isDarkMode); }
+    function toggleMiniPlayer() { isMini = !isMini; mainPlayer.classList.toggle('hidden', isMini); miniPlayer.classList.toggle('hidden', !isMini); }
+    function showLyrics() { const modal = document.getElementById('lyricsModal'); const textContainer = document.getElementById('lyricsText'); modal.classList.remove('hidden'); let i=0; textContainer.innerHTML = demoLyrics[0]; const interval = setInterval(()=>{ i=(i+1)%demoLyrics.length; textContainer.innerHTML = demoLyrics[i]; }, 2200); modal.dataset.interval = interval; }
+    function hideLyrics() { const modal = document.getElementById('lyricsModal'); clearInterval(modal.dataset.interval); modal.classList.add('hidden'); }
+    function startVisualizer() { cancelAnimationFrame(animationFrame); function draw() { ctx.clearRect(0,0,visualizerCanvas.width,visualizerCanvas.height); const barWidth = visualizerCanvas.width / bars.length * 0.75; for(let i=0;i<bars.length;i++) { bars[i]=10+Math.random()*38*(isPlaying?1:0.3); const h=bars[i]; ctx.fillStyle = `hsl(${200+i*2},95%,68%)`; ctx.fillRect(i*(visualizerCanvas.width/bars.length), visualizerCanvas.height-h, barWidth, h); } animationFrame = requestAnimationFrame(draw); } draw(); }
+    document.addEventListener('keydown', e => { if(e.code==='Space') { e.preventDefault(); togglePlay(); } if(e.code==='ArrowRight') audio.currentTime += 10; if(e.code==='ArrowLeft') audio.currentTime -= 10; if(e.code==='ArrowUp') { volumeSlider.value = Math.min(100, +volumeSlider.value+10); changeVolume(); } if(e.code==='ArrowDown') { volumeSlider.value = Math.max(0, +volumeSlider.value-10); changeVolume(); } });
+    function init() { renderFeatured(); renderRecentlyPlayed(); switchTab(0); loadSong(0); audio.volume = 0.75; volumeSlider.value = 75; showToast("🎧 BeatFlow • All tracks loaded"); }
     window.onload = init;
   </script>
 </body>
