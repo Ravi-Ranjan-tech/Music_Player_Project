@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
-  <title>BeatFlow • Futuristic Music Player (scroll fixed)</title>
+  <title>BeatFlow • Futuristic Music Player (Light/Dark Mode)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
   <style>
@@ -16,7 +16,7 @@
     body {
       font-family: 'Inter', system-ui, sans-serif;
       transition: background 0.3s ease, color 0.3s ease;
-      overflow: hidden; /* prevent body scroll, we will use inner scroll */
+      overflow: hidden;
       height: 100vh;
     }
 
@@ -72,35 +72,40 @@
       opacity: 0.9;
     }
 
+    /* ===== LIGHT MODE OVERRIDES (applied when body has class "light") ===== */
     body.light {
       background: #f8fafc;
       color: #0f172a;
     }
 
     body.light .bg-zinc-950 { background-color: #f8fafc !important; }
-    body.light .bg-zinc-900 { background-color: #e2e8f0 !important; }
-    body.light .bg-zinc-800 { background-color: #cbd5e1 !important; }
-    body.light .bg-zinc-700 { background-color: #94a3b8 !important; }
-    body.light .bg-zinc-900\/95 { background-color: rgba(226,232,240,0.95) !important; }
-    body.light .bg-zinc-900\/80 { background-color: rgba(226,232,240,0.8) !important; }
-    body.light .border-zinc-800 { border-color: #cbd5e1 !important; }
-    body.light .border-zinc-700 { border-color: #94a3b8 !important; }
-    body.light .text-white { color: #0f172a !important; }
+    body.light .bg-zinc-900 { background-color: #ffffff !important; }
+    body.light .bg-zinc-900\/90 { background-color: rgba(255,255,255,0.95) !important; }
+    body.light .bg-zinc-800 { background-color: #eef2ff !important; }
+    body.light .border-zinc-800 { border-color: #e2e8f0 !important; }
     body.light .text-zinc-400 { color: #475569 !important; }
     body.light .text-zinc-500 { color: #64748b !important; }
+    body.light .text-white { color: #0f172a !important; }
     body.light .text-black { color: #0f172a !important; }
     body.light .bg-black\/80 { background-color: rgba(255,255,255,0.92) !important; }
-    body.light .bg-white\/10 { background-color: rgba(255,255,255,0.12) !important; }
+    body.light .bg-white\/10 { background-color: rgba(0,0,0,0.05) !important; }
+    body.light .bg-zinc-900\/95 { background-color: rgba(255,255,255,0.95) !important; }
+    body.light .bg-zinc-900\/80 { background-color: rgba(255,255,255,0.9) !important; }
+    body.light .bg-zinc-700 { background-color: #cbd5e1 !important; }
+    body.light .border-zinc-700 { border-color: #cbd5e1 !important; }
+    body.light .song-card { background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    body.light .nav-item.active { background: #cffafe; color: #0891b2; }
+    body.light .bottom-player { background: rgba(255,255,255,0.92); border-top-color: #e2e8f0; }
+    body.light .scrollable-main::-webkit-scrollbar-track { background: #e2e8f0; }
+    body.light .scrollable-main::-webkit-scrollbar-thumb { background: #94a3b8; }
 
-    /* ========== SCROLL FIX: main content area scrolls ========== */
+    /* Scrollable area */
     .scrollable-main {
       overflow-y: auto;
       overflow-x: hidden;
       flex: 1;
-      padding-bottom: 8rem; /* space for bottom player */
+      padding-bottom: 8rem;
     }
-
-    /* Custom scrollbar */
     .scrollable-main::-webkit-scrollbar {
       width: 6px;
     }
@@ -112,216 +117,98 @@
       background: #52525b;
       border-radius: 10px;
     }
-    body.light .scrollable-main::-webkit-scrollbar-track {
-      background: #e2e8f0;
-    }
-    body.light .scrollable-main::-webkit-scrollbar-thumb {
-      background: #94a3b8;
-    }
 
-    /* ========== RESPONSIVE DESIGN (no interface changes, only layout) ========== */
+    /* Responsive */
     @media (max-width: 1024px) {
       .grid-cols-5 { grid-template-columns: repeat(3, 1fr) !important; }
     }
-
     @media (max-width: 768px) {
-      /* convert sidebar to horizontal menu */
-      .flex.h-screen {
-        flex-direction: column;
-      }
-      .w-72 {
-        width: 100%;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        align-items: center;
-        padding: 0.5rem 0.75rem;
-        border-right: none;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        min-height: auto;
-      }
-      .w-72 .p-8:first-child {
-        display: none;
-      }
-      .w-72 .flex-1 {
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-        width: auto;
-        padding: 0;
-        margin: 0;
-      }
-      .w-72 .nav-item {
-        padding: 0.5rem 0.9rem;
-        gap: 0.5rem;
-        border-radius: 40px;
-        white-space: nowrap;
-        font-size: 0.85rem;
-      }
-      .w-72 .border-t {
-        display: none;
-      }
-
-      /* bottom player responsive stacking */
-      .bottom-player {
-        flex-wrap: wrap;
-        height: auto;
-        padding: 0.75rem 1rem;
-        gap: 0.75rem;
-      }
-      .bottom-player > div:first-child {
-        width: 100%;
-        order: 0;
-        justify-content: space-between;
-      }
-      .bottom-player > div:nth-child(2) {
-        width: 100%;
-        order: 2;
-        margin-top: 0.25rem;
-      }
-      .bottom-player > div:last-child {
-        width: auto;
-        order: 1;
-        gap: 1rem;
-        justify-content: flex-end;
-      }
-
-      #visualizer {
-        max-width: 280px;
-        width: 100%;
-        height: 36px;
-      }
-
-      .p-8 {
-        padding: 1rem;
-      }
-      .gap-6 {
-        gap: 0.875rem;
-      }
-      .h-20 {
-        height: auto;
-        padding: 0.75rem 1rem;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-      }
-      .text-5xl {
-        font-size: 2rem;
-      }
-      .grid-cols-5 {
-        grid-template-columns: repeat(2, 1fr) !important;
-      }
-      .grid-cols-3 {
-        grid-template-columns: repeat(2, 1fr) !important;
-      }
-      .w-80 {
-        width: 100%;
-      }
-      .scrollable-main {
-        padding-bottom: 12rem; /* extra space for stacked player */
-      }
-    }
-
-    @media (max-width: 480px) {
-      .grid-cols-2 {
-        grid-template-columns: 1fr !important;
-      }
-      .bottom-player .flex.items-center.gap-8 {
-        gap: 0.8rem;
-      }
-      .bottom-player .w-14 {
-        width: 48px;
-        height: 48px;
-      }
-      .song-card .absolute.bottom-4.right-4 {
-        bottom: 0.5rem;
-        right: 0.5rem;
-      }
-      .song-card .w-10.h-10 {
-        width: 32px;
-        height: 32px;
-        font-size: 0.8rem;
-      }
+      .scrollable-main { padding-bottom: 12rem; }
+      .bottom-player { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.75rem; }
+      .bottom-player > div:first-child { width: 100%; order: 0; justify-content: space-between; }
+      .bottom-player > div:nth-child(2) { width: 100%; order: 2; margin-top: 0.25rem; }
+      .bottom-player > div:last-child { width: auto; order: 1; gap: 1rem; justify-content: flex-end; }
+      #visualizer { max-width: 280px; width: 100%; height: 36px; }
+      .text-5xl { font-size: 2rem; }
+      .grid-cols-5 { grid-template-columns: repeat(2, 1fr) !important; }
     }
   </style>
 </head>
-<body class="bg-zinc-950 text-white min-h-screen dark">
+<body class="bg-zinc-950 text-white dark">
 
-  <div class="flex flex-col h-screen overflow-hidden">
-    <!-- Top bar (sticky) + sidebar integrated inside for mobile -->
-    <div class="bg-zinc-900/80 backdrop-blur-md border-b border-zinc-800 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-30 flex-wrap">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-pink-500 rounded-xl flex items-center justify-center shadow-md">♪</div>
-        <h1 class="logo-font text-2xl font-bold bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">BeatFlow</h1>
-      </div>
-      <div class="flex-1 max-w-md relative">
-        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm"></i>
-        <input id="searchInput" type="text" placeholder="Search songs, artists..." onkeyup="filterSongs()" class="w-full bg-zinc-800 border border-zinc-700 py-2.5 pl-11 pr-4 rounded-full text-sm focus:outline-none focus:border-cyan-400">
-      </div>
-      <div class="flex items-center gap-3">
-        <button onclick="toggleMiniPlayer()" class="text-xl text-zinc-400 hover:text-white">↕️</button>
-        <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center text-lg">
-          <i id="themeIcon" class="fa-solid fa-moon"></i>
-        </button>
-        <div class="flex items-center gap-2">
-          <div class="text-right hidden sm:block">
-            <p class="font-medium text-sm">Rohit</p>
-            <p class="text-xs text-zinc-500">Patna • India</p>
-          </div>
-          <div class="w-9 h-9 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-sm font-bold">RK</div>
-        </div>
-      </div>
+  <!-- Top Bar -->
+  <div class="bg-zinc-900/80 backdrop-blur-md border-b border-zinc-800 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-30 flex-wrap">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-pink-500 rounded-xl flex items-center justify-center shadow-md">♪</div>
+      <h1 class="logo-font text-2xl font-bold bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">BeatFlow</h1>
     </div>
-
-    <!-- Horizontal navigation (mobile friendly) + sidebar items inside a scroll wrapper -->
-    <div class="bg-zinc-900/90 border-b border-zinc-800 py-2 px-3 flex flex-row justify-evenly items-center sticky top-16 z-20 gap-1 overflow-x-auto">
-      <div onclick="switchTab(0)" class="nav-item active flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition whitespace-nowrap"><i class="fa-solid fa-house"></i><span>Home</span></div>
-      <div onclick="switchTab(1)" class="nav-item flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition whitespace-nowrap"><i class="fa-solid fa-list-music"></i><span>Library</span></div>
-      <div onclick="switchTab(2)" class="nav-item flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition whitespace-nowrap"><i class="fa-solid fa-heart"></i><span>Favorites</span></div>
-      <div onclick="switchTab(3)" class="nav-item flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition whitespace-nowrap"><i class="fa-solid fa-list-ul"></i><span>Queue</span></div>
-      <div onclick="createPlaylist()" class="flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-2 rounded-full text-sm transition whitespace-nowrap"><i class="fa-solid fa-plus"></i><span class="hidden xs:inline">Playlist</span></div>
+    <div class="flex-1 max-w-md relative">
+      <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm"></i>
+      <input id="searchInput" type="text" placeholder="Search songs, artists..." onkeyup="filterSongs()" class="w-full bg-zinc-800 border border-zinc-700 py-2.5 pl-11 pr-4 rounded-full text-sm focus:outline-none focus:border-cyan-400">
     </div>
-
-    <!-- MAIN SCROLLABLE AREA (FIXED: now scrolls properly) -->
-    <div id="contentArea" class="scrollable-main">
-      <!-- Home Tab -->
-      <div id="homeTab" class="tab px-4 md:px-8 py-6">
-        <h1 class="text-3xl md:text-5xl font-bold mb-6">Good afternoon, Rohit 👋</h1>
-        <div class="mb-12">
-          <h2 class="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2"><i class="fa-solid fa-chart-line text-cyan-400"></i> Trending Now</h2>
-          <div id="featuredGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
+    <div class="flex items-center gap-3">
+      <button onclick="toggleMiniPlayer()" class="text-xl text-zinc-400 hover:text-white">↕️</button>
+      <button onclick="toggleTheme()" id="themeToggleBtn" class="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center text-lg">
+        <i id="themeIcon" class="fa-solid fa-moon"></i>
+      </button>
+      <div class="flex items-center gap-2">
+        <div class="text-right hidden sm:block">
+          <p class="font-medium text-sm">Rohit</p>
+          <p class="text-xs text-zinc-500">Patna • India</p>
         </div>
-        <div>
-          <h2 class="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2"><i class="fa-regular fa-clock text-purple-300"></i> Recently Played</h2>
-          <div id="recentGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
-        </div>
-      </div>
-
-      <!-- Library Tab -->
-      <div id="libraryTab" class="tab hidden px-4 md:px-8 py-6">
-        <h1 class="text-3xl md:text-4xl font-bold mb-6">📚 Your Library</h1>
-        <div id="libraryList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-      </div>
-
-      <!-- Favorites Tab -->
-      <div id="favoritesTab" class="tab hidden px-4 md:px-8 py-6">
-        <h1 class="text-3xl md:text-4xl font-bold mb-6"><i class="fa-solid fa-heart text-pink-500"></i> Favorites</h1>
-        <div id="favoritesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-      </div>
-
-      <!-- Queue Tab -->
-      <div id="queueTab" class="tab hidden px-4 md:px-8 py-6">
-        <div class="flex flex-wrap justify-between items-center mb-6 gap-3">
-          <h1 class="text-3xl md:text-4xl font-bold">🎧 Up Next</h1>
-          <button onclick="clearQueue()" class="px-5 py-2 bg-red-500/20 hover:bg-red-500/40 rounded-full text-red-300 text-sm transition">Clear Queue</button>
-        </div>
-        <div id="queueList" class="space-y-3"></div>
+        <div class="w-9 h-9 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-sm font-bold">RK</div>
       </div>
     </div>
   </div>
 
-  <!-- BOTTOM PLAYER (fixed) -->
+  <!-- Horizontal Navigation -->
+  <div class="bg-zinc-900/90 border-b border-zinc-800 py-2 px-3 flex flex-row justify-evenly items-center sticky top-16 z-20 gap-1 overflow-x-auto">
+    <div onclick="switchTab(0)" class="nav-item active flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition whitespace-nowrap"><i class="fa-solid fa-house"></i><span>Home</span></div>
+    <div onclick="switchTab(1)" class="nav-item flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition whitespace-nowrap"><i class="fa-solid fa-list-music"></i><span>Library</span></div>
+    <div onclick="switchTab(2)" class="nav-item flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition whitespace-nowrap"><i class="fa-solid fa-heart"></i><span>Favorites</span></div>
+    <div onclick="switchTab(3)" class="nav-item flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition whitespace-nowrap"><i class="fa-solid fa-list-ul"></i><span>Queue</span></div>
+    <div onclick="createPlaylist()" class="flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-2 rounded-full text-sm transition whitespace-nowrap"><i class="fa-solid fa-plus"></i><span class="hidden xs:inline">Playlist</span></div>
+  </div>
+
+  <!-- Main Scrollable Content -->
+  <div id="contentArea" class="scrollable-main">
+    <!-- Home Tab -->
+    <div id="homeTab" class="tab px-4 md:px-8 py-6">
+      <h1 class="text-3xl md:text-5xl font-bold mb-6">Good afternoon, Rohit 👋</h1>
+      <div class="mb-12">
+        <h2 class="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2"><i class="fa-solid fa-chart-line text-cyan-400"></i> Trending Now</h2>
+        <div id="featuredGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
+      </div>
+      <div>
+        <h2 class="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2"><i class="fa-regular fa-clock text-purple-300"></i> Recently Played</h2>
+        <div id="recentGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
+      </div>
+    </div>
+
+    <!-- Library Tab -->
+    <div id="libraryTab" class="tab hidden px-4 md:px-8 py-6">
+      <h1 class="text-3xl md:text-4xl font-bold mb-6">📚 Your Library</h1>
+      <div id="libraryList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </div>
+
+    <!-- Favorites Tab -->
+    <div id="favoritesTab" class="tab hidden px-4 md:px-8 py-6">
+      <h1 class="text-3xl md:text-4xl font-bold mb-6"><i class="fa-solid fa-heart text-pink-500"></i> Favorites</h1>
+      <div id="favoritesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </div>
+
+    <!-- Queue Tab -->
+    <div id="queueTab" class="tab hidden px-4 md:px-8 py-6">
+      <div class="flex flex-wrap justify-between items-center mb-6 gap-3">
+        <h1 class="text-3xl md:text-4xl font-bold">🎧 Up Next</h1>
+        <button onclick="clearQueue()" class="px-5 py-2 bg-red-500/20 hover:bg-red-500/40 rounded-full text-red-300 text-sm transition">Clear Queue</button>
+      </div>
+      <div id="queueList" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Player (fixed) -->
   <div id="mainPlayer" class="bottom-player fixed bottom-0 left-0 right-0 bg-zinc-900/95 border-t border-zinc-700 p-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-3 z-50 shadow-2xl">
-    <!-- track info -->
     <div class="flex items-center gap-3 min-w-[180px] flex-1 md:flex-none">
       <img id="playerCover" src="https://picsum.photos/id/1015/600/600" class="w-12 h-12 rounded-xl object-cover cover-spin shadow-md" alt="cover"/>
       <div class="min-w-0 flex-1">
@@ -330,8 +217,6 @@
       </div>
       <button onclick="toggleFavorite()" id="favBtn" class="text-2xl text-zinc-400 hover:text-pink-400 transition">♡</button>
     </div>
-
-    <!-- center controls -->
     <div class="flex-1 w-full md:max-w-2xl flex flex-col items-center gap-1">
       <div class="flex items-center gap-4 md:gap-6 text-xl md:text-2xl">
         <button onclick="toggleShuffle()" id="shuffleBtn" class="hover:text-cyan-400 transition text-lg">🔀</button>
@@ -347,8 +232,6 @@
       </div>
       <canvas id="visualizer" width="300" height="32" class="hidden md:block mt-1 w-full max-w-[280px]"></canvas>
     </div>
-
-    <!-- right side -->
     <div class="flex items-center gap-3">
       <button onclick="showLyrics()" class="text-xl hover:text-cyan-400 transition">📜</button>
       <button onclick="changeEqualizer()" id="eqBtn" class="px-3 py-1.5 bg-zinc-800 rounded-xl text-xs font-mono">Bass</button>
@@ -360,7 +243,7 @@
     </div>
   </div>
 
-  <!-- MINI PLAYER -->
+  <!-- Mini Player -->
   <div id="miniPlayer" class="hidden fixed bottom-24 right-5 bg-black/70 backdrop-blur-xl border border-cyan-400/40 rounded-3xl px-4 py-2 flex items-center gap-3 shadow-2xl z-[60]">
     <img id="miniCover" src="https://picsum.photos/id/1015/70/70" class="w-10 h-10 rounded-xl object-cover"/>
     <div class="max-w-[130px]">
@@ -385,7 +268,7 @@
   <audio id="audioPlayer" preload="metadata" ontimeupdate="updateProgress()" onended="nextTrack()"></audio>
 
   <script>
-    // ==================== 🎵 EXACT SONG LIST (ORIGINAL) ====================
+    // ========== SONG DATABASE (EXACT ORIGINAL LINKS) ==========
     const SONG_URLS = {
       "Khuda Bhi": "https://github.com/user-attachments/files/27046476/_Khuda.Bhi_.FULL.VIDEO.Song._.Sunny.Leone._.Mohit.Chauhan._.Ek.Paheli.Leela.MP3_128K.mp3",
       "Aankhon Mein Base Ho Tum (Remix)": "https://github.com/user-attachments/files/27045123/Aankhon.Mein.Base.Ho.Tum.Remix.-.DJ.Nirmal.Bahrain._Sunil.Shetty_.Naseeruddin.Shah.special_.MP3_320K.mp3",
@@ -444,7 +327,7 @@
       { id:28, title:"Golden Hour", artist:"LoFi Sunset", src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", cover:`https://picsum.photos/id/${coverIDs[27]}/600/600`, duration:"2:30" }
     ];
 
-    // --- core variables ---
+    // ========== APP STATE ==========
     let currentSongIndex = 0, isPlaying = false, isShuffle = false, repeatMode = 0;
     let favorites = JSON.parse(localStorage.getItem('bf_favs') || '[]');
     let recentlyPlayed = JSON.parse(localStorage.getItem('bf_recent') || '[]');
@@ -463,15 +346,14 @@
     const volumeIcon = document.getElementById('volumeIcon');
     const visualizerCanvas = document.getElementById('visualizer');
     const ctx = visualizerCanvas.getContext('2d');
-    
-    // helpers
+
     function showToast(msg) { let t=document.createElement('div'); t.className='toast fixed bottom-20 left-1/2 -translate-x-1/2 bg-black/80 text-white px-5 py-2 rounded-full text-sm z-[200]'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2000); }
     function formatTime(s){ if(isNaN(s)) return "0:00"; let m=Math.floor(s/60), sec=Math.floor(s%60); return `${m}:${sec<10?'0':''}${sec}`; }
     function updateProgress(){ if(audio.duration){ progressBar.value=(audio.currentTime/audio.duration)*100; currentTimeEl.textContent=formatTime(audio.currentTime); durationEl.textContent=formatTime(audio.duration); } }
     function seekAudio(){ audio.currentTime=(progressBar.value/100)*audio.duration; }
     function changeVolume(){ audio.volume=volumeSlider.value/100; updateVolumeIcon(); }
     function toggleMute(){ audio.muted=!audio.muted; volumeSlider.value=audio.muted?0:audio.volume*100; updateVolumeIcon(); }
-    function updateVolumeIcon(){ volumeIcon.className = audio.muted||audio.volume===0 ? "fa-solid fa-volume-xmark cursor-pointer text-2xl" : audio.volume<0.4?"fa-solid fa-volume-low cursor-pointer text-2xl":"fa-solid fa-volume-high cursor-pointer text-2xl"; }
+    function updateVolumeIcon(){ volumeIcon.className = audio.muted||audio.volume===0 ? "fa-solid fa-volume-xmark cursor-pointer text-lg" : audio.volume<0.4?"fa-solid fa-volume-low cursor-pointer text-lg":"fa-solid fa-volume-high cursor-pointer text-lg"; }
     function toggleShuffle(){ isShuffle=!isShuffle; document.getElementById('shuffleBtn').style.color=isShuffle?'#67e8f9':''; showToast(isShuffle?"Shuffle On":"Shuffle Off"); }
     function toggleRepeat(){ repeatMode=(repeatMode+1)%3; const colors=['','#67e8f9','#f472b6']; document.getElementById('repeatBtn').style.color=colors[repeatMode]; showToast(["Repeat Off","Repeat All","Repeat One"][repeatMode]); }
     function changeEqualizer(){ const presets=["Bass","Treble","Chill","Party"]; let cur=document.getElementById('eqBtn').innerText; let idx=presets.indexOf(cur); let next=presets[(idx+1)%4]; document.getElementById('eqBtn').innerText=next; audio.playbackRate=next==="Party"?1.15:next==="Chill"?0.92:1.0; showToast(next+" EQ Active"); }
@@ -496,7 +378,7 @@
       renderQueue();
       renderLibrary(); renderFavorites();
     }
-    function togglePlay(){ if(!audio.src) loadSong(0); if(isPlaying){ audio.pause(); playBtn.innerHTML='▶'; if(animationFrame) cancelAnimationFrame(animationFrame); } else { audio.play().catch(e=>showToast("⚠️ Playback error")); playBtn.innerHTML='❚❚'; startVisualizer(); } isPlaying=!isPlaying; }
+    function togglePlay(){ if(!audio.src) loadSong(0); if(isPlaying){ audio.pause(); playBtn.innerHTML='▶️'; if(animationFrame) cancelAnimationFrame(animationFrame); } else { audio.play().catch(e=>showToast("⚠️ Playback error")); playBtn.innerHTML='⏸️'; startVisualizer(); } isPlaying=!isPlaying; }
     function nextTrack(){ if(repeatMode===2){ audio.currentTime=0; audio.play(); return; } let next=isShuffle?Math.floor(Math.random()*songs.length):currentSongIndex+1; if(next>=songs.length) next=0; loadSong(next); if(isPlaying) audio.play(); }
     function prevTrack(){ let prev=isShuffle?Math.floor(Math.random()*songs.length):currentSongIndex-1; if(prev<0) prev=songs.length-1; loadSong(prev); if(isPlaying) audio.play(); }
     
@@ -505,7 +387,7 @@
     function clearQueue(){ queue=[]; renderQueue(); showToast("Queue cleared"); }
     function createSongElement(song){ let div=document.createElement('div'); div.className='song-card bg-zinc-900 rounded-3xl overflow-hidden cursor-pointer group'; div.innerHTML=`<div class="relative"><img src="${song.cover}" class="w-full aspect-square object-cover"/><div class="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition"><button onclick="event.stopPropagation(); addToQueue(songs.find(s=>s.id===${song.id}))" class="w-10 h-10 bg-white/90 rounded-2xl flex items-center justify-center shadow">➕</button><button onclick="event.stopPropagation(); playSong(${song.id-1})" class="w-10 h-10 bg-cyan-400 rounded-2xl flex items-center justify-center shadow">▶</button></div></div><div class="p-5"><div class="font-semibold truncate">${song.title}</div><div class="text-sm text-zinc-400 truncate">${song.artist}</div></div>`; div.onclick=()=>playSong(song.id-1); return div; }
     function addToQueue(song){ if(!queue.some(s=>s.id===song.id)){ queue.push(song); renderQueue(); showToast(`➕ "${song.title}" queued`); } }
-    function playSong(idx){ loadSong(idx); audio.play().then(()=>{ isPlaying=true; playBtn.innerHTML='❚❚'; startVisualizer(); }).catch(()=>showToast('Playback error')); }
+    function playSong(idx){ loadSong(idx); audio.play().then(()=>{ isPlaying=true; playBtn.innerHTML='⏸️'; startVisualizer(); }).catch(()=>showToast('Playback error')); }
     function renderFeatured(){ let g=document.getElementById('featuredGrid'); g.innerHTML=''; songs.forEach(s=>g.appendChild(createSongElement(s))); }
     function renderRecentlyPlayed(){ let g=document.getElementById('recentGrid'); if(g){ g.innerHTML=''; recentlyPlayed.forEach(s=>g.appendChild(createSongElement(s))); } }
     function renderLibrary(){ let g=document.getElementById('libraryList'); if(g){ g.innerHTML=''; songs.forEach(s=>g.appendChild(createSongElement(s))); } }
@@ -513,14 +395,44 @@
     function filterSongs(){ let term=document.getElementById('searchInput').value.toLowerCase(); let filtered=songs.filter(s=>s.title.toLowerCase().includes(term)||s.artist.toLowerCase().includes(term)); let active=document.querySelector('.tab:not(.hidden)'); if(active&&active.id==='libraryTab'){ let cont=document.getElementById('libraryList'); cont.innerHTML=''; filtered.forEach(s=>cont.appendChild(createSongElement(s))); } }
     function switchTab(tab){ document.querySelectorAll('.nav-item').forEach((el,i)=>el.classList.toggle('active',i===tab)); document.querySelectorAll('.tab').forEach(t=>t.classList.add('hidden')); if(tab===0) document.getElementById('homeTab').classList.remove('hidden'); else if(tab===1){ document.getElementById('libraryTab').classList.remove('hidden'); renderLibrary(); } else if(tab===2){ document.getElementById('favoritesTab').classList.remove('hidden'); renderFavorites(); } else if(tab===3){ document.getElementById('queueTab').classList.remove('hidden'); renderQueue(); } }
     function createPlaylist(){ let name=prompt("Playlist name?"); if(name) showToast(`✨ "${name}" created`); }
-    function toggleTheme(){ let isDark=!document.body.classList.contains('light'); document.body.classList.toggle('light',!isDark); document.body.classList.toggle('dark',isDark); document.getElementById('themeIcon').className=isDark?'fa-solid fa-sun':'fa-solid fa-moon'; }
+    
+    // ========== THEME TOGGLE (FIXED WORKING) ==========
+    function toggleTheme() {
+      const body = document.body;
+      const isLight = body.classList.contains('light');
+      if (isLight) {
+        body.classList.remove('light');
+        body.classList.add('dark');
+        document.getElementById('themeIcon').className = "fa-solid fa-moon";
+      } else {
+        body.classList.remove('dark');
+        body.classList.add('light');
+        document.getElementById('themeIcon').className = "fa-solid fa-sun";
+      }
+      localStorage.setItem('beatflow_theme', body.classList.contains('light') ? 'light' : 'dark');
+    }
+    
     function toggleMiniPlayer(){ document.getElementById('mainPlayer').classList.toggle('hidden'); document.getElementById('miniPlayer').classList.toggle('hidden'); }
-    let demoLyrics=["🎵 Floating through neon lights...","Heartbeat syncing with the bass...","Lost in this endless dream...","We rise above the city glow...","Feel the rhythm take control..."];
+    let demoLyrics=["🎵 Floating through neon lights...","🎶 Heartbeat syncing with the bass...","✨ Lost in this endless dream...","🌙 We rise above the city glow...","🔥 Feel the rhythm take control..."];
     function showLyrics(){ let modal=document.getElementById('lyricsModal'); let txt=document.getElementById('lyricsText'); modal.classList.remove('hidden'); let i=0; txt.innerHTML=demoLyrics[0]; let iv=setInterval(()=>{ i=(i+1)%demoLyrics.length; txt.innerHTML=demoLyrics[i]; },2200); modal.dataset.interval=iv; }
     function hideLyrics(){ let modal=document.getElementById('lyricsModal'); clearInterval(modal.dataset.interval); modal.classList.add('hidden'); }
     function startVisualizer(){ if(animationFrame) cancelAnimationFrame(animationFrame); let bars=48; function draw(){ if(!isPlaying){ animationFrame=requestAnimationFrame(draw); return; } ctx.clearRect(0,0,visualizerCanvas.width,visualizerCanvas.height); let w=visualizerCanvas.width/bars; for(let i=0;i<bars;i++){ let h=5+Math.random()*32; ctx.fillStyle=`hsl(${190+i*3},80%,65%)`; ctx.fillRect(i*w,visualizerCanvas.height-h,w-2,h); } animationFrame=requestAnimationFrame(draw); } draw(); }
     document.addEventListener('keydown',e=>{ if(e.code==='Space'){ e.preventDefault(); togglePlay(); } if(e.code==='ArrowRight') audio.currentTime=Math.min(audio.duration||0, audio.currentTime+10); if(e.code==='ArrowLeft') audio.currentTime=Math.max(0, audio.currentTime-10); if(e.code==='ArrowUp'){ volumeSlider.value=Math.min(100, +volumeSlider.value+10); changeVolume(); } if(e.code==='ArrowDown'){ volumeSlider.value=Math.max(0, +volumeSlider.value-10); changeVolume(); } });
-    function init(){ renderFeatured(); renderRecentlyPlayed(); switchTab(0); loadSong(0); audio.volume=0.75; volumeSlider.value=75; showToast("🎧 BeatFlow • Full scroll & responsive"); }
+    
+    function init() {
+      // Load saved theme
+      const savedTheme = localStorage.getItem('beatflow_theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light');
+        document.body.classList.remove('dark');
+        document.getElementById('themeIcon').className = "fa-solid fa-sun";
+      } else {
+        document.body.classList.add('dark');
+        document.body.classList.remove('light');
+        document.getElementById('themeIcon').className = "fa-solid fa-moon";
+      }
+      renderFeatured(); renderRecentlyPlayed(); switchTab(0); loadSong(0); audio.volume=0.75; volumeSlider.value=75; showToast("🎧 BeatFlow • Light/Dark mode ready");
+    }
     window.onload = init;
   </script>
 </body>
