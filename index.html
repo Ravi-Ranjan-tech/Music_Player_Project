@@ -3,411 +3,409 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
-  <title>BeatFlow • Ambient Music Player | Fully responsive</title>
-  <!-- Tailwind + Font Awesome + Google Fonts -->
+  <title>BeatFlow • Futuristic Music Player</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@500;600;700&display=swap');
-    
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap');
+
     * { -webkit-tap-highlight-color: transparent; }
+
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      transition: background 0.3s ease, color 0.2s;
+      font-family: 'Inter', system-ui, sans-serif;
+      transition: background 0.5s ease;
     }
-    .logo-font { font-family: 'Space Grotesk', monospace; letter-spacing: -0.02em; }
-    
-    /* Song card animations */
+    .logo-font { font-family: 'Space Grotesk', sans-serif; }
+
     .song-card {
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      backdrop-filter: blur(4px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .song-card:active { transform: scale(0.98); }
-    @media (hover: hover) {
-      .song-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4); }
+    .song-card:hover {
+      transform: translateY(-8px) scale(1.03);
     }
-    
+
+    .playing { 
+      background: linear-gradient(90deg, #22d3ee, #c026d3);
+      color: white;
+      box-shadow: 0 0 25px rgba(103, 232, 249, 0.6);
+    }
+
     .cover-spin {
-      animation: spin 25s linear infinite paused;
+      animation: spin 28s linear infinite paused;
     }
     .playing .cover-spin { animation-play-state: running; }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    
-    /* progress bar custom */
-    #progressBar, #volumeSlider {
-      accent-color: #22d3ee;
-      cursor: pointer;
-    }
-    input[type="range"] {
-      height: 5px;
-      border-radius: 20px;
-    }
+
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
     .bottom-player {
-      backdrop-filter: blur(28px);
-      background: rgba(24,24,27,0.92);
-      border-top: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      transition: all 0.4s ease;
     }
-    body.light .bottom-player { background: rgba(245,245,250,0.92); border-top-color: #cbd5e1; }
-    
-    /* tab active */
+
+    #progressBar {
+      accent-color: #67e8f9;
+      height: 6px;
+      border-radius: 9999px;
+    }
+
     .nav-item.active {
-      background: rgba(103,232,249,0.15);
+      background: rgba(103, 232, 249, 0.2);
       color: #67e8f9;
-      box-shadow: inset 0 0 0 1px rgba(103,232,249,0.3);
     }
-    body.light .nav-item.active { background: #cffafe; color: #0891b2; box-shadow: none; }
-    
+
     .toast {
-      animation: fadeUp 0.4s ease forwards;
+      animation: toastIn 0.4s ease forwards;
     }
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+    @keyframes toastIn {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
-    
-    /* mobile responsive layout */
+
+    .lyrics {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    body.light {
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    body.light .bg-zinc-950 { background-color: #f8fafc !important; }
+    body.light .bg-zinc-900 { background-color: #e2e8f0 !important; }
+    body.light .bg-zinc-800 { background-color: #cbd5e1 !important; }
+    body.light .bg-zinc-700 { background-color: #94a3b8 !important; }
+    body.light .bg-zinc-900\/95 { background-color: rgba(226,232,240,0.95) !important; }
+    body.light .bg-zinc-900\/80 { background-color: rgba(226,232,240,0.8) !important; }
+    body.light .border-zinc-800 { border-color: #cbd5e1 !important; }
+    body.light .border-zinc-700 { border-color: #94a3b8 !important; }
+    body.light .text-white { color: #0f172a !important; }
+    body.light .text-zinc-400 { color: #475569 !important; }
+    body.light .text-zinc-500 { color: #64748b !important; }
+    body.light .text-black { color: #0f172a !important; }
+    body.light .bg-black\/80 { background-color: rgba(255,255,255,0.92) !important; }
+    body.light .bg-white\/10 { background-color: rgba(255,255,255,0.12) !important; }
+
+    /* ✅ Mobile responsiveness – keeps interface identical, only adapts layout */
     @media (max-width: 768px) {
-      .desktop-sidebar { width: 100% !important; flex-direction: row !important; overflow-x: auto; padding: 0.75rem 1rem !important; gap: 1rem; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); justify-content: space-evenly; position: sticky; top: 0; z-index: 20; background: inherit; }
-      .desktop-sidebar div[class*="flex-1"] { display: none; }
-      .desktop-sidebar .p-8:first-child { display: none; }
-      .desktop-sidebar .border-t { display: none; }
-      .nav-item { padding: 0.5rem 1rem !important; gap: 0.5rem !important; background: rgba(255,255,255,0.03); border-radius: 40px !important; white-space: nowrap; }
-      .main-content-area { padding: 1rem !important; }
-      .controls-group { gap: 0.8rem !important; }
-      .bottom-player { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+      .flex.h-screen { flex-direction: column; }
+      .w-72 { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: space-evenly; padding: 0.5rem; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); align-items: center; }
+      .w-72 .p-8:first-child { display: none; }
+      .w-72 .flex-1 { display: flex; flex-direction: row; gap: 0.5rem; width: auto; padding: 0; }
+      .w-72 .nav-item { padding: 0.5rem 1rem; gap: 0.5rem; border-radius: 40px; white-space: nowrap; }
+      .w-72 .border-t { display: none; }
+      .bottom-player { flex-wrap: wrap; height: auto; padding: 0.75rem 0.5rem; gap: 0.5rem; }
       .bottom-player > div:first-child { width: 100%; order: 0; justify-content: space-between; }
       .bottom-player > div:nth-child(2) { width: 100%; order: 2; margin-top: 0.25rem; }
-      .bottom-player > div:last-child { width: auto; order: 1; gap: 1rem; }
-      #visualizer { width: 100%; max-width: 250px; }
+      .bottom-player > div:last-child { width: auto; order: 1; gap: 0.8rem; }
+      #visualizer { width: 100%; max-width: 280px; }
       .grid-cols-5 { grid-template-columns: repeat(2,1fr) !important; }
-      .w-80 { width: auto; }
       .text-5xl { font-size: 2rem; }
+      .p-8 { padding: 1rem; }
+      .gap-6 { gap: 0.8rem; }
+      .h-20 { height: auto; padding: 0.75rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
     }
-    
     @media (max-width: 480px) {
       .grid-cols-2 { grid-template-columns: 1fr !important; }
       .player-buttons button { width: 48px; height: 48px; }
-      .bottom-player .flex.items-center.gap-8 { gap: 0.8rem; }
     }
-    
-    body.light {
-      background: #f1f5f9;
-      color: #0f172a;
-    }
-    body.light .bg-zinc-950 { background-color: #f8fafc !important; }
-    body.light .bg-zinc-900 { background-color: #ffffff !important; }
-    body.light .bg-zinc-800 { background-color: #eef2ff !important; }
-    body.light .text-zinc-400 { color: #475569; }
-    body.light .border-zinc-800 { border-color: #e2e8f0; }
-    body.light .song-card { background: white; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
-    body.light .playing { background: #cffafe; color: #0f172a; }
-    .lyrics-modal { backdrop-filter: blur(12px); background: rgba(0,0,0,0.85); }
   </style>
 </head>
-<body class="bg-zinc-950 text-white antialiased dark">
+<body class="bg-zinc-950 text-white min-h-screen dark">
 
-<div class="flex flex-col h-screen overflow-hidden">
-  <!-- TOP BAR for logo & search (mobile friendly) -->
-  <div class="bg-zinc-900/80 backdrop-blur-md border-b border-zinc-800 px-5 py-3 flex items-center justify-between gap-3 sticky top-0 z-30">
-    <div class="flex items-center gap-3">
-      <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md">♪</div>
-      <h1 class="logo-font text-2xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">BeatFlow</h1>
-    </div>
-    <div class="flex-1 max-w-md relative">
-      <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm"></i>
-      <input id="globalSearch" type="text" placeholder="Search songs, artists..." class="w-full bg-zinc-800 border border-zinc-700 py-2.5 pl-11 pr-4 rounded-full text-sm focus:outline-none focus:border-cyan-400">
-    </div>
-    <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center text-lg">
-      <i id="themeIcon" class="fa-solid fa-moon"></i>
-    </button>
-  </div>
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div class="w-72 bg-zinc-900 border-r border-zinc-800 flex flex-col">
+      <div class="p-8 flex items-center gap-3">
+        <div class="w-11 h-11 bg-gradient-to-br from-cyan-400 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg">♪</div>
+        <h1 class="logo-font text-4xl font-bold tracking-tighter bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">BeatFlow</h1>
+      </div>
 
-  <div class="flex flex-1 overflow-hidden relative">
-    <!-- Sidebar - desktop & mobile adapted -->
-    <div class="desktop-sidebar w-72 bg-zinc-900/90 border-r border-zinc-800 flex flex-col overflow-y-auto shrink-0 transition-all">
-      <div class="p-6 hidden md:block">
-        <div class="flex items-center gap-3 mb-8">
-          <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-pink-500 rounded-2xl flex items-center justify-center text-2xl shadow-xl">🎧</div>
-          <h1 class="logo-font text-3xl font-bold bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">BeatFlow</h1>
+      <div class="flex-1 px-6 space-y-1">
+        <div onclick="switchTab(0)" class="nav-item active flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-lg font-medium"> <i class="fa-solid fa-house w-6"></i> <span>Home</span> </div>
+        <div onclick="switchTab(1)" class="nav-item flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-lg font-medium"> <i class="fa-solid fa-list-music w-6"></i> <span>Library</span> </div>
+        <div onclick="switchTab(2)" class="nav-item flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-lg font-medium"> <i class="fa-solid fa-heart w-6"></i> <span>Favorites</span> </div>
+        <div onclick="switchTab(3)" class="nav-item flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-lg font-medium"> <i class="fa-solid fa-list-ul w-6"></i> <span>Queue</span> </div>
+      </div>
+
+      <div class="p-6 border-t border-zinc-800 flex items-center justify-between">
+        <button onclick="toggleTheme()" class="px-4 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-xl transition">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+        <button onclick="createPlaylist()" class="flex-1 mx-4 py-3 bg-white/10 hover:bg-white/20 rounded-3xl text-sm font-medium transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-plus"></i> New Playlist
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+      <div class="h-20 bg-zinc-900/80 backdrop-blur-md border-b border-zinc-800 px-10 flex items-center gap-6">
+        <div class="flex-1 max-w-xl">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+            <input id="searchInput" type="text" placeholder="Search songs, artists..." 
+                   onkeyup="filterSongs()" 
+                   class="w-full bg-zinc-800 border border-zinc-700 pl-14 py-4 rounded-3xl focus:outline-none focus:border-cyan-400 placeholder-zinc-500"/>
+          </div>
+        </div>
+        <div class="ml-auto flex items-center gap-6">
+          <button onclick="toggleMiniPlayer()" class="text-2xl text-zinc-400 hover:text-white">↕️</button>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <p class="font-medium">Rohit</p>
+              <p class="text-xs text-zinc-500">Patna • India</p>
+            </div>
+            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-xl">R</div>
+          </div>
         </div>
       </div>
-      <div class="flex md:flex-col flex-row gap-1 p-3 md:p-5">
-        <div onclick="switchTab(0)" class="nav-item active flex items-center gap-3 px-5 py-3 rounded-3xl cursor-pointer font-medium transition justify-center"><i class="fa-solid fa-house w-5"></i><span>Home</span></div>
-        <div onclick="switchTab(1)" class="nav-item flex items-center gap-3 px-5 py-3 rounded-3xl cursor-pointer font-medium transition justify-center"><i class="fa-solid fa-layer-group w-5"></i><span>Library</span></div>
-        <div onclick="switchTab(2)" class="nav-item flex items-center gap-3 px-5 py-3 rounded-3xl cursor-pointer font-medium transition justify-center"><i class="fa-solid fa-heart w-5"></i><span>Favorites</span></div>
-        <div onclick="switchTab(3)" class="nav-item flex items-center gap-3 px-5 py-3 rounded-3xl cursor-pointer font-medium transition justify-center"><i class="fa-solid fa-list w-5"></i><span>Queue</span></div>
-        <div onclick="createPlaylist()" class="mt-2 md:mt-6 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 px-4 py-2.5 rounded-2xl text-sm transition-all"><i class="fa-solid fa-plus"></i> New Playlist</div>
-      </div>
-      <div class="mt-auto p-5 border-t border-zinc-800 hidden md:flex justify-between items-center">
-        <div class="text-xs text-zinc-500">🎵 24/7 stream ready</div>
-        <button onclick="toggleTheme()" class="text-xl">🌓</button>
-      </div>
-    </div>
 
-    <!-- MAIN SCROLLABLE CONTENT (add pb-28 to avoid overlap) -->
-    <div class="flex-1 overflow-y-auto pb-28 md:pb-32" id="contentArea">
-      <!-- Home Tab -->
-      <div id="homeTab" class="tab px-5 md:px-8 py-6">
-        <h2 class="text-3xl md:text-5xl font-bold mb-6">🎧 good vibes, <span id="userGreet">Rohit</span></h2>
-        <div class="mb-12">
-          <h3 class="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2"><i class="fa-solid fa-chart-line text-cyan-400"></i> Trending Now</h3>
-          <div id="featuredGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
+      <div class="flex-1 overflow-y-auto p-8" id="contentArea">
+        <!-- Home -->
+        <div id="homeTab" class="tab">
+          <h1 class="text-5xl font-bold mb-10">Good afternoon, Rohit 👋</h1>
+          <div class="mb-12">
+            <h2 class="text-2xl font-semibold mb-6">Trending Now</h2>
+            <div id="featuredGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"></div>
+          </div>
+          <div>
+            <h2 class="text-2xl font-semibold mb-6">Recently Played</h2>
+            <div id="recentGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"></div>
+          </div>
         </div>
-        <div>
-          <h3 class="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2"><i class="fa-regular fa-clock text-purple-300"></i> Recently Played</h3>
-          <div id="recentGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
+
+        <!-- Library -->
+        <div id="libraryTab" class="tab hidden">
+          <h1 class="text-4xl font-bold mb-8">Your Library</h1>
+          <div id="libraryList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+
+        <!-- Favorites -->
+        <div id="favoritesTab" class="tab hidden">
+          <h1 class="text-4xl font-bold mb-8">Favorites ❤️</h1>
+          <div id="favoritesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+
+        <!-- Queue -->
+        <div id="queueTab" class="tab hidden">
+          <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold">Now Playing Queue</h1>
+            <button onclick="clearQueue()" class="px-6 py-3 bg-red-500/20 hover:bg-red-500/30 rounded-2xl text-red-400 transition">Clear Queue</button>
+          </div>
+          <div id="queueList" class="space-y-3"></div>
         </div>
       </div>
-      <!-- Library Tab -->
-      <div id="libraryTab" class="tab hidden px-5 md:px-8 py-6">
-        <h2 class="text-3xl font-bold mb-6">📚 Your Music Library</h2>
-        <div id="libraryList" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
-      </div>
-      <!-- Favorites Tab -->
-      <div id="favoritesTab" class="tab hidden px-5 md:px-8 py-6">
-        <h2 class="text-3xl font-bold mb-6"><i class="fa-solid fa-heart text-pink-500"></i> Favorites</h2>
-        <div id="favoritesList" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"></div>
-      </div>
-      <!-- Queue Tab -->
-      <div id="queueTab" class="tab hidden px-5 md:px-8 py-6">
-        <div class="flex flex-wrap justify-between items-center mb-6 gap-3">
-          <h2 class="text-3xl font-bold">🎧 Up Next</h2>
-          <button onclick="clearQueue()" class="px-5 py-2 bg-red-500/20 hover:bg-red-500/40 rounded-full text-red-300 text-sm transition">Clear Queue</button>
-        </div>
-        <div id="queueList" class="space-y-3"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- BOTTOM MAIN PLAYER (sticky, fully responsive) -->
-  <div id="mainPlayer" class="bottom-player fixed bottom-0 left-0 right-0 bg-zinc-900/95 border-t border-zinc-700 px-4 md:px-7 py-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-3 z-50">
-    <!-- track info + fav -->
-    <div class="flex items-center gap-3 min-w-[180px] flex-1 md:flex-none">
-      <img id="playerCover" src="https://picsum.photos/id/106/120/120" class="w-14 h-14 rounded-2xl object-cover shadow-md cover-spin" alt="cover">
-      <div class="min-w-0">
-        <div id="playerTitle" class="font-semibold text-sm md:text-base truncate max-w-[150px]">Choose track</div>
-        <div id="playerArtist" class="text-zinc-400 text-xs truncate">BeatFlow</div>
-      </div>
-      <button onclick="toggleFavorite()" id="favBtn" class="text-2xl text-zinc-400 hover:text-pink-400 transition">♡</button>
-    </div>
-
-    <!-- CENTER CONTROLS + PROGRESS -->
-    <div class="flex-1 w-full md:max-w-2xl flex flex-col items-center gap-1">
-      <div class="flex items-center gap-4 md:gap-6 text-xl md:text-2xl">
-        <button onclick="toggleShuffle()" id="shuffleBtn" class="hover:text-cyan-400 transition text-lg">🔀</button>
-        <button onclick="prevTrack()" class="hover:scale-110 transition">⏮️</button>
-        <button onclick="togglePlay()" id="playBtn" class="w-12 h-12 md:w-14 md:h-14 bg-white text-black rounded-full flex items-center justify-center text-xl shadow-xl hover:scale-105 transition">▶️</button>
-        <button onclick="nextTrack()" class="hover:scale-110 transition">⏭️</button>
-        <button onclick="toggleRepeat()" id="repeatBtn" class="hover:text-cyan-400 transition text-lg">🔁</button>
-      </div>
-      <div class="w-full flex items-center gap-3 text-xs">
-        <span id="currentTime" class="w-9 text-right">0:00</span>
-        <input type="range" id="progressBar" min="0" max="100" value="0" class="flex-1 h-1.5 rounded-full">
-        <span id="duration" class="w-9">0:00</span>
-      </div>
-      <canvas id="visualizer" width="360" height="40" class="hidden md:block mt-1 w-full max-w-[320px]"></canvas>
-    </div>
-
-    <!-- RIGHT: volume, eq, mini mode -->
-    <div class="flex items-center gap-3">
-      <button onclick="showLyrics()" class="text-xl hover:text-cyan-400 transition">📜</button>
-      <button onclick="cycleEQ()" id="eqBtn" class="px-3 py-1.5 bg-zinc-800 rounded-xl text-xs font-mono">Bass</button>
-      <div class="flex items-center gap-2">
-        <i onclick="toggleMute()" id="volumeIcon" class="fa-solid fa-volume-high cursor-pointer"></i>
-        <input type="range" id="volumeSlider" min="0" max="100" value="70" class="w-20">
-      </div>
-      <button onclick="toggleMiniPlayer()" class="text-xl text-zinc-400 hover:text-white hidden md:block">🗗</button>
     </div>
   </div>
 
-  <!-- MINI PLAYER (collapsible) -->
-  <div id="miniPlayer" class="hidden fixed bottom-24 right-5 bg-black/70 backdrop-blur-xl border border-cyan-400/40 rounded-3xl px-4 py-2 flex items-center gap-3 shadow-2xl z-[60]">
-    <img id="miniCover" src="https://picsum.photos/id/106/70/70" class="w-11 h-11 rounded-xl object-cover">
-    <div class="max-w-[140px]">
-      <div id="miniTitle" class="font-medium text-sm truncate">Not playing</div>
+  <!-- Bottom Player -->
+  <div id="mainPlayer" class="bottom-player fixed bottom-0 left-0 right-0 bg-zinc-900/95 border-t border-zinc-700 h-28 flex items-center px-8 gap-8 z-50">
+    <!-- Song Info -->
+    <div class="flex items-center gap-5 w-80">
+      <img id="playerCover" src="https://picsum.photos/id/1015/600/600" class="w-20 h-20 rounded-2xl object-cover cover-spin shadow-2xl" alt="cover"/>
+      <div class="min-w-0 flex-1">
+        <div id="playerTitle" class="font-semibold text-lg truncate">Select a song</div>
+        <div id="playerArtist" class="text-zinc-400 text-sm truncate">—</div>
+      </div>
+      <button onclick="toggleFavorite()" id="favBtn" class="text-3xl text-zinc-400 hover:text-pink-500">❤️</button>
     </div>
-    <button onclick="togglePlay()" class="text-white text-xl w-9 h-9 flex items-center justify-center bg-cyan-500/30 rounded-full">▶️</button>
-    <button onclick="toggleMiniPlayer()" class="text-white text-lg">✕</button>
+
+    <!-- Controls -->
+    <div class="flex-1 flex flex-col items-center">
+      <div class="flex items-center gap-8 text-2xl mb-2">
+        <button onclick="toggleShuffle()" id="shuffleBtn" class="hover:text-cyan-400 transition" title="Shuffle">🔀</button>
+        <button onclick="prevTrack()" class="hover:text-white">⏮</button>
+        <button onclick="togglePlay()" id="playBtn" class="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-xl">▶</button>
+        <button onclick="nextTrack()" class="hover:text-white">⏭</button>
+        <button onclick="toggleRepeat()" id="repeatBtn" class="hover:text-cyan-400 transition" title="Repeat">🔁</button>
+      </div>
+
+      <div class="w-full max-w-2xl flex items-center gap-4">
+        <span id="currentTime" class="tabular-nums text-sm w-12">0:00</span>
+        <input type="range" id="progressBar" min="0" max="100" value="0" class="flex-1" oninput="seekAudio()"/>
+        <span id="duration" class="tabular-nums text-sm w-12 text-right">0:00</span>
+      </div>
+
+      <canvas id="visualizer" width="420" height="48" class="mt-2"></canvas>
+    </div>
+
+    <!-- Right Side -->
+    <div class="w-80 flex items-center justify-end gap-6">
+      <button onclick="showLyrics()" class="text-xl hover:text-cyan-400">📜</button>
+      <button onclick="changeEqualizer()" id="eqBtn" class="px-5 py-2 bg-zinc-800 rounded-2xl text-sm font-mono">Bass</button>
+      <div class="flex items-center gap-3">
+        <i onclick="toggleMute()" id="volumeIcon" class="fa-solid fa-volume-high cursor-pointer text-2xl"></i>
+        <input type="range" id="volumeSlider" min="0" max="100" value="75" class="w-28" oninput="changeVolume()"/>
+      </div>
+      <button onclick="toggleMiniPlayer()" class="text-2xl text-zinc-400 hover:text-white">↘</button>
+    </div>
+  </div>
+
+  <!-- Mini Player -->
+  <div id="miniPlayer" class="hidden fixed bottom-6 right-6 bg-zinc-900 border border-cyan-400/30 rounded-3xl px-6 py-3 flex items-center gap-4 shadow-2xl z-50">
+    <img id="miniCover" src="https://picsum.photos/id/1015/600/600" class="w-12 h-12 rounded-2xl object-cover"/>
+    <div class="min-w-0">
+      <div id="miniTitle" class="font-medium text-sm truncate w-48">Song Title</div>
+    </div>
+    <button onclick="togglePlay()" class="ml-4 text-2xl">▶</button>
+    <button onclick="toggleMiniPlayer()" class="ml-2 text-xl">✕</button>
   </div>
 
   <!-- Lyrics Modal -->
-  <div id="lyricsModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[100] p-5">
-    <div class="bg-zinc-900 rounded-3xl p-6 max-w-md w-full shadow-2xl border border-cyan-500/20">
-      <div class="flex justify-between items-center mb-5">
-        <h3 class="text-2xl font-bold">🎤 Now Playing</h3>
-        <button onclick="hideLyrics()" class="text-3xl">&times;</button>
+  <div id="lyricsModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100]">
+    <div class="bg-zinc-900 rounded-3xl p-10 max-w-lg w-full mx-4">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Now Playing Lyrics</h2>
+        <button onclick="hideLyrics()" class="text-3xl">✕</button>
       </div>
-      <div id="lyricsText" class="text-center text-zinc-300 text-lg leading-relaxed py-6 italic">Select a song to see lyrics 💫</div>
-      <button onclick="hideLyrics()" class="w-full py-3 bg-cyan-600 rounded-2xl font-medium">Close</button>
+      <div id="lyricsText" class="lyrics text-center min-h-[200px] text-zinc-300"></div>
+      <button onclick="hideLyrics()" class="mt-8 w-full py-4 bg-cyan-500 hover:bg-cyan-600 rounded-2xl font-medium">Close</button>
     </div>
   </div>
 
-  <audio id="audioPlayer" preload="metadata" ontimeupdate="updateProgress()" onended="autoNext()"></audio>
+  <audio id="audioPlayer" ontimeupdate="updateProgress()" onended="handleTrackEnd()"></audio>
 
   <script>
-    // ---------- RELIABLE DEMO AUDIO (SOUNDHELIX + Community Tracks) ----------
-    const DEMO_SONGS = [
-      { title: "Neon Horizon", artist: "Electric Dreams", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", coverId: 155, duration: 210, lyrics: "Strobe lights on the boulevard... chasing echoes of the night..." },
-      { title: "Velvet Sky", artist: "Lo-Fi Pulse", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", coverId: 169, duration: 198, lyrics: "Midnight rain on window pane, silent waves…" },
-      { title: "Ocean Drive", artist: "Retro 80s", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", coverId: 55, duration: 232, lyrics: "Cruising under moonlight, synthwave groove..." },
-      { title: "Golden Hour", artist: "Chill Vibes", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", coverId: 29, duration: 195, lyrics: "Warm breeze, honey sunset, feeling free..." },
-      { title: "Magnetic Flow", artist: "BeatFlow Lab", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3", coverId: 42, duration: 217, lyrics: "Where rhythm meets the soul, we rise together..." },
-      { title: "Crystal Falls", artist: "Ambient Tale", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", coverId: 98, duration: 184, lyrics: "Water drops and piano keys, healing dreams..." },
-      { title: "Starlight Drive", artist: "Neon Pulse", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3", coverId: 226, duration: 205, lyrics: "City lights like diamonds, steering through the night..." },
-      { title: "Midnight Echo", artist: "Reverie", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3", coverId: 202, duration: 220, lyrics: "Silent whispers in the dark, you're my frequency..." }
+    // ---------- 🎵 EXACT SONG URLS (KEPT ORIGINAL) ----------
+    const SONG_URLS = {
+      "Khuda Bhi": "https://github.com/user-attachments/files/27046476/_Khuda.Bhi_.FULL.VIDEO.Song._.Sunny.Leone._.Mohit.Chauhan._.Ek.Paheli.Leela.MP3_128K.mp3",
+      "Aankhon Mein Base Ho Tum (Remix)": "https://github.com/user-attachments/files/27045123/Aankhon.Mein.Base.Ho.Tum.Remix.-.DJ.Nirmal.Bahrain._Sunil.Shetty_.Naseeruddin.Shah.special_.MP3_320K.mp3",
+      "World Best Ringtone": "https://github.com/user-attachments/files/27045326/World.Best.Ringtone._.Instrumental.Ringtone._.Romantic.Ringtone._.Popular.Instrumental.Ringtone.MP3_320K.mp3",
+      "Taal Se Taal (DJ NYK Remix)": "https://github.com/user-attachments/files/27045321/taal.se.taal.DJ.NYK.Remix._.Bollywood.LoFi_.Chill_.Trap.Beats.MP3_320K.mp3",
+      "Sham Bhi Khoob Hay": "https://github.com/user-attachments/files/27045316/SHAM.BHI.KHOOB.HAY._----.BASSBOOSTED.----_3D.SONG._.DEEP.BASS_.REVERB._.OLD.IS.GOLD._.90S.BOLLYWOOD.HITS.MP3_320K.mp3",
+      "Ram Siya Ram": "https://github.com/user-attachments/files/27045308/Ram.Siya.Ram.-.Slowed.Lofi.MP3_320K.mp3",
+      "Radha Ke Man Mohan": "https://github.com/user-attachments/files/27045307/Radha.ke.man.mohan._ringtone.music.MP3_70K.mp3",
+      "Bilionera": "https://github.com/user-attachments/files/27045305/Otilia.-.Bilionera.Official.Cantoyo.Video.MP3_128K.mp3",
+      "No Love - Feeling Mashup": "https://github.com/user-attachments/files/27045304/No.Love.-.Feeling.Mashup.2022.ft.shubh.Ap.Dillon.Jass.Manak.Mahesh.128.kbps.mp3",
+      "Galliyan Remix": "https://github.com/user-attachments/files/27045298/Mickey.Singh.-.Galliyan.Remix.Moving.On.128.kbps.mp3",
+      "Mann Mera": "https://github.com/user-attachments/files/27045292/Mann.Mera.Table.No.21.Lofi.Remake.Shantanu.Music.Chill.and.soothing.128.kbps.mp3",
+      "Mangal Murti Ram Dulare": "https://github.com/user-attachments/files/27045284/Mangal.Murti.Ram.dulare._Mangal.Murti.Raam.Dulaare.Full.Song.Dj.Soft.Bass.Remix.Full.Song.MP3_320K.mp3",
+      "Jo Bhi Kasmein (Remix)": "https://github.com/user-attachments/files/27045280/Jo.Bhi.Kasmein.Remix.-.DJ.Sunny._.DJ.AKD.-.Raaz._.Bipasha.Basu._.Dino.Morea._.Udit.Narayan._.Alka.MP3_320K.mp3",
+      "Har Har Shambhu": "https://github.com/user-attachments/files/27045273/har.har.shambhu.Lyrics._.Mahadev.New.Song._.har.har.shambhu.shiv.mahadeva._.Shiv.Bhajan._.Mahakaal.MP3_320K.mp3",
+      "Hamdard (Slowed & Reverb)": "https://github.com/user-attachments/files/27045268/Hamdard.Slowed.and.Reverb.super.Ek.Villain.Arijit.Singh.Mithoon.128.kbps.mp3",
+      "Falak Tak Chal": "https://github.com/user-attachments/files/27045260/Falak.Tak.Chal.Udit.Narayan.Mahalakshmi.Iyer.GM.Music.128.kbps.mp3",
+      "Dekh Lena": "https://github.com/user-attachments/files/27045257/Dekh.Lena.-.Arijit.Singh.Song.Slowed.And.Reverb.Lofi.Mix.128.kbps.mp3",
+      "Best Of Monsoon": "https://github.com/user-attachments/files/27045255/Best.Of.Mansoon.i20.Sports.Highway.Rain.Drive.Evening.Rain.Romant.128.kbps.mp3",
+      "Beautiful Instrumental Ringtone": "https://github.com/user-attachments/files/27045254/Beautiful.Instrumental.Ringtone._.Humnava.Mere.Instrumental.Ringtone._.Best.Mobile.Ringtone._.Call.MP3_128K.mp3",
+      "Aziyat (Slowed Reverb)": "https://github.com/user-attachments/files/27045219/AZIYAT.SLOWED.REVERB.-.Toh.kya.hua.tu.mera.nahi._._Lo-Fi_Music._._Lofi.Songs._.Sad_Songs_2021.MP3_320K.mp3",
+      "Aisa Diwana Hua Ye Dil": "https://github.com/user-attachments/files/27045173/Aisa.diwana.hua.ye.dil._----.BASSBOOSTED.----_.deep.bass_.old.song.bassboosted_.indian.bassboosted_.req.MP3_320K.mp3",
+      "Airtel Ringtone DJ Trap Remix": "https://github.com/user-attachments/files/27045167/Airtel.ringtone.DJ.Trap.Remix.bass.boosted.2021._.Supreb.Creation.MP3_320K.mp3",
+      "Airtel Instrumental (Classical Style)": "https://github.com/user-attachments/files/27045151/Airtel.Instrumental._.Flute._.Classical.Style._.Anunand.S._.Best.Ringtone.2020._.Link.in.Description.MP3_320K.mp3",
+      "Airtel Instrumental Ringtone HD": "https://github.com/user-attachments/files/27045161/Airtel.Instrumental.Ringtone._.HD._.Use.--Headphones.--._.MP3_320K.mp3"
+    };
+    
+    const coverIDs = [1015, 201, 1021, 1022, 1023, 1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032, 1033, 1034, 1035, 1036, 1037, 1038, 1039, 1040, 1041, 1042, 116, 117, 118, 119];
+    
+    let songs = [
+      { id: 1, title: "Khuda Bhi", artist: "Sunny Leone & Mohit Chauhan", src: SONG_URLS["Khuda Bhi"], cover: `https://picsum.photos/id/${coverIDs[0]}/600/600`, duration: "3:12" },
+      { id: 2, title: "World Best Ringtone", artist: "Instrumental Ringtone", src: SONG_URLS["World Best Ringtone"], cover: `https://picsum.photos/id/${coverIDs[1]}/600/600`, duration: "3:20" },
+      { id: 3, title: "Taal Se Taal (DJ NYK Remix)", artist: "Bollywood LoFi", src: SONG_URLS["Taal Se Taal (DJ NYK Remix)"], cover: `https://picsum.photos/id/${coverIDs[2]}/600/600`, duration: "3:20" },
+      { id: 4, title: "Sham Bhi Khoob Hay", artist: "Bassboosted", src: SONG_URLS["Sham Bhi Khoob Hay"], cover: `https://picsum.photos/id/${coverIDs[3]}/600/600`, duration: "3:20" },
+      { id: 5, title: "Ram Siya Ram", artist: "Slowed Lofi", src: SONG_URLS["Ram Siya Ram"], cover: `https://picsum.photos/id/${coverIDs[4]}/600/600`, duration: "3:20" },
+      { id: 6, title: "Radha Ke Man Mohan", artist: "Ringtone Music", src: SONG_URLS["Radha Ke Man Mohan"], cover: `https://picsum.photos/id/${coverIDs[5]}/600/600`, duration: "1:10" },
+      { id: 7, title: "Bilionera", artist: "Otilia", src: SONG_URLS["Bilionera"], cover: `https://picsum.photos/id/${coverIDs[6]}/600/600`, duration: "3:20" },
+      { id: 8, title: "No Love - Feeling Mashup", artist: "Various Artists", src: SONG_URLS["No Love - Feeling Mashup"], cover: `https://picsum.photos/id/${coverIDs[7]}/600/600`, duration: "3:20" },
+      { id: 9, title: "Galliyan Remix", artist: "Mickey Singh", src: SONG_URLS["Galliyan Remix"], cover: `https://picsum.photos/id/${coverIDs[8]}/600/600`, duration: "3:20" },
+      { id: 10, title: "Mann Mera", artist: "LoFi Remake", src: SONG_URLS["Mann Mera"], cover: `https://picsum.photos/id/${coverIDs[9]}/600/600`, duration: "3:20" },
+      { id: 11, title: "Mangal Murti Ram Dulare", artist: "Soft Bass Remix", src: SONG_URLS["Mangal Murti Ram Dulare"], cover: `https://picsum.photos/id/${coverIDs[10]}/600/600`, duration: "3:20" },
+      { id: 12, title: "Jo Bhi Kasmein (Remix)", artist: "DJ Sunny", src: SONG_URLS["Jo Bhi Kasmein (Remix)"], cover: `https://picsum.photos/id/${coverIDs[11]}/600/600`, duration: "3:20" },
+      { id: 13, title: "Har Har Shambhu", artist: "Mahadev", src: SONG_URLS["Har Har Shambhu"], cover: `https://picsum.photos/id/${coverIDs[12]}/600/600`, duration: "3:20" },
+      { id: 14, title: "Hamdard (Slowed & Reverb)", artist: "Arijit Singh", src: SONG_URLS["Hamdard (Slowed & Reverb)"], cover: `https://picsum.photos/id/${coverIDs[13]}/600/600`, duration: "3:20" },
+      { id: 15, title: "Falak Tak Chal", artist: "Udit Narayan", src: SONG_URLS["Falak Tak Chal"], cover: `https://picsum.photos/id/${coverIDs[14]}/600/600`, duration: "3:20" },
+      { id: 16, title: "Dekh Lena", artist: "Arijit Singh", src: SONG_URLS["Dekh Lena"], cover: `https://picsum.photos/id/${coverIDs[15]}/600/600`, duration: "3:20" },
+      { id: 17, title: "Best Of Monsoon", artist: "Rain Drive", src: SONG_URLS["Best Of Monsoon"], cover: `https://picsum.photos/id/${coverIDs[16]}/600/600`, duration: "3:20" },
+      { id: 18, title: "Beautiful Instrumental Ringtone", artist: "Humnava Mere", src: SONG_URLS["Beautiful Instrumental Ringtone"], cover: `https://picsum.photos/id/${coverIDs[17]}/600/600`, duration: "3:20" },
+      { id: 19, title: "Aziyat (Slowed Reverb)", artist: "Lo-Fi Music", src: SONG_URLS["Aziyat (Slowed Reverb)"], cover: `https://picsum.photos/id/${coverIDs[18]}/600/600`, duration: "3:20" },
+      { id: 20, title: "Aisa Diwana Hua Ye Dil", artist: "Bassboosted", src: SONG_URLS["Aisa Diwana Hua Ye Dil"], cover: `https://picsum.photos/id/${coverIDs[19]}/600/600`, duration: "3:20" },
+      { id: 21, title: "Airtel Ringtone DJ Trap Remix", artist: "Supreb Creation", src: SONG_URLS["Airtel Ringtone DJ Trap Remix"], cover: `https://picsum.photos/id/${coverIDs[20]}/600/600`, duration: "3:20" },
+      { id: 22, title: "Airtel Instrumental (Classical Style)", artist: "Anunand S", src: SONG_URLS["Airtel Instrumental (Classical Style)"], cover: `https://picsum.photos/id/${coverIDs[21]}/600/600`, duration: "3:20" },
+      { id: 23, title: "Airtel Instrumental Ringtone HD", artist: "Ringtone", src: SONG_URLS["Airtel Instrumental Ringtone HD"], cover: `https://picsum.photos/id/${coverIDs[22]}/600/600`, duration: "3:20" },
+      { id: 24, title: "Aankhon Mein Base Ho Tum (Remix)", artist: "DJ Nirmal Bahrain", src: SONG_URLS["Aankhon Mein Base Ho Tum (Remix)"], cover: `https://picsum.photos/id/${coverIDs[23]}/600/600`, duration: "3:20" },
+      { id: 25, title: "Midnight Drive", artist: "Neon Pulse", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", cover: `https://picsum.photos/id/${coverIDs[24]}/600/600`, duration: "4:05" },
+      { id: 26, title: "Ocean Breeze", artist: "Ambient Waves", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", cover: `https://picsum.photos/id/${coverIDs[25]}/600/600`, duration: "2:48" },
+      { id: 27, title: "Electric Soul", artist: "Future Beats", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3", cover: `https://picsum.photos/id/${coverIDs[26]}/600/600`, duration: "3:55" },
+      { id: 28, title: "Golden Hour", artist: "LoFi Sunset", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", cover: `https://picsum.photos/id/${coverIDs[27]}/600/600`, duration: "2:30" }
     ];
     
-    let songs = DEMO_SONGS.map((s, idx) => ({
-      id: idx,
-      title: s.title,
-      artist: s.artist,
-      src: s.src,
-      cover: `https://picsum.photos/id/${s.coverId}/400/400`,
-      duration: `${Math.floor(s.duration/60)}:${(s.duration%60).toString().padStart(2,'0')}`,
-      lyrics: s.lyrics
-    }));
-    
-    // extra songs for variety
-    songs.push({ id: 8, title: "Radioactive Waves", artist: "Future Bass", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3", cover: "https://picsum.photos/id/13/400/400", duration: "3:28", lyrics: "Energy electric, feel the bass inside..." });
-    songs.push({ id: 9, title: "Dreamscape", artist: "Ethereal", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3", cover: "https://picsum.photos/id/96/400/400", duration: "2:56", lyrics: "Endless fields of sound, floating high..." });
-    
-    let currentIndex = 0;
-    let isPlaying = false;
-    let isShuffle = false;
-    let repeatMode = 0; // 0:off,1:one,2:all
+    let currentSongIndex = 0, isPlaying = false, isShuffle = false, repeatMode = 0;
     let favorites = JSON.parse(localStorage.getItem('bf_favs') || '[]');
     let recentlyPlayed = JSON.parse(localStorage.getItem('bf_recent') || '[]');
     let queue = [];
-    let isMuted = false;
-    let lastVolume = 0.7;
-    let eqPreset = 0;
-    let visualizerInterval;
-    let audio = document.getElementById('audioPlayer');
-    
-    // DOM elements
+    let isMuted = false, lastVolume = 0.75;
+    let animationFrame;
+    const audio = document.getElementById('audioPlayer');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
     const playBtn = document.getElementById('playBtn');
-    const progress = document.getElementById('progressBar');
-    const currentTimeSpan = document.getElementById('currentTime');
-    const durationSpan = document.getElementById('duration');
-    const playerTitle = document.getElementById('playerTitle');
-    const playerArtist = document.getElementById('playerArtist');
-    const playerCover = document.getElementById('playerCover');
-    const favBtn = document.getElementById('favBtn');
-    const volumeSlider = document.getElementById('volumeSlider');
-    const volumeIcon = document.getElementById('volumeIcon');
     
-    function syncUI() {
-      playerTitle.textContent = songs[currentIndex].title;
-      playerArtist.textContent = songs[currentIndex].artist;
-      playerCover.src = songs[currentIndex].cover;
-      document.getElementById('miniCover').src = songs[currentIndex].cover;
-      document.getElementById('miniTitle').textContent = songs[currentIndex].title;
-      updateFavButton();
-      renderLibraryAndHome();
-    }
+    function showToast(msg) { const t=document.createElement('div'); t.className='toast fixed bottom-20 left-1/2 -translate-x-1/2 bg-zinc-800 text-white px-8 py-4 rounded-3xl shadow-2xl flex items-center gap-3 z-[200]'; t.innerHTML=`<i class="fa-solid fa-check-circle text-cyan-400"></i> ${msg}`; document.body.appendChild(t); setTimeout(()=>t.remove(),2800); }
+    function formatTime(s){ if(isNaN(s)) return "0:00"; let m=Math.floor(s/60), sec=Math.floor(s%60); return `${m}:${sec<10?'0':''}${sec}`; }
+    function updateProgress() { if(audio.duration){ progressBar.value=(audio.currentTime/audio.duration)*100; currentTimeEl.textContent=formatTime(audio.currentTime); durationEl.textContent=formatTime(audio.duration); } }
+    function seekAudio() { audio.currentTime = (progressBar.value/100)*audio.duration; }
+    function changeVolume() { audio.volume = volumeSlider.value/100; lastVolume=audio.volume; isMuted=false; updateVolumeIcon(); }
+    function toggleMute() { if(isMuted) { audio.volume=lastVolume; volumeSlider.value=lastVolume*100; } else { lastVolume=audio.volume; audio.volume=0; volumeSlider.value=0; } isMuted=!isMuted; updateVolumeIcon(); }
+    function updateVolumeIcon() { const icon=document.getElementById('volumeIcon'); icon.className = audio.volume===0 ? "fa-solid fa-volume-xmark cursor-pointer text-2xl" : audio.volume<0.4 ? "fa-solid fa-volume-low cursor-pointer text-2xl" : "fa-solid fa-volume-high cursor-pointer text-2xl"; }
+    function toggleShuffle() { isShuffle=!isShuffle; document.getElementById('shuffleBtn').style.color=isShuffle?'#67e8f9':''; showToast(isShuffle?"Shuffle On":"Shuffle Off"); }
+    function toggleRepeat() { repeatMode=(repeatMode+1)%3; const colors=['','#67e8f9','#f472b6']; document.getElementById('repeatBtn').style.color=colors[repeatMode]; showToast(["Repeat Off","Repeat All","Repeat One"][repeatMode]); }
+    function changeEqualizer() { const presets=["Bass","Treble","Chill","Party"]; let cur=document.getElementById('eqBtn').textContent; let idx=presets.indexOf(cur); let next=presets[(idx+1)%4]; document.getElementById('eqBtn').textContent=next; audio.playbackRate=next==="Party"?1.15:next==="Chill"?0.92:1.0; showToast(next+" EQ Active"); }
     
-    function loadSong(index) {
-      if (index < 0) index = 0;
-      if (index >= songs.length) index = 0;
-      currentIndex = index;
-      const s = songs[currentIndex];
-      audio.src = s.src;
+    function updateUI() { const s=songs[currentSongIndex]; playerTitle.textContent=s.title; playerArtist.textContent=s.artist; playerCover.src=s.cover; document.getElementById('miniCover').src=s.cover; document.getElementById('miniTitle').textContent=s.title; const isFav=favorites.some(f=>f.id===s.id); favBtn.innerHTML=isFav?'❤️':'♡'; }
+    
+    function loadSong(idx) {
+      currentSongIndex = Math.min(Math.max(0,idx), songs.length-1);
+      const song = songs[currentSongIndex];
+      audio.src = song.src;
       audio.load();
-      syncUI();
-      addToRecent(s);
-    }
-    
-    function addToRecent(song) {
-      recentlyPlayed = recentlyPlayed.filter(s => s.id !== song.id);
-      recentlyPlayed.unshift(song);
-      if (recentlyPlayed.length > 12) recentlyPlayed.pop();
-      localStorage.setItem('bf_recent', JSON.stringify(recentlyPlayed));
+      updateUI();
+      if(!recentlyPlayed.some(s=>s.id===song.id)) recentlyPlayed.unshift(song);
+      if(recentlyPlayed.length>12) recentlyPlayed.pop();
+      localStorage.setItem('bf_recent',JSON.stringify(recentlyPlayed));
       renderRecentlyPlayed();
+      if(!queue.some(s=>s.id===song.id)) queue.push(song);
+      renderQueue();
+      renderLibrary(); renderFavorites();
     }
     
-    function togglePlay() {
-      if (!audio.src) loadSong(0);
-      if (isPlaying) {
-        audio.pause();
-        playBtn.innerHTML = '▶️';
-      } else {
-        audio.play().catch(e => showToast("⚠️ Playback error, try again"));
-        playBtn.innerHTML = '⏸️';
-      }
-      isPlaying = !isPlaying;
-      updatePlayingHighlight();
-      if (isPlaying) startVisualizer(); else if(visualizerInterval) cancelAnimationFrame(visualizerInterval);
-    }
+    function playSong(index) { loadSong(index); audio.play().then(()=>{ isPlaying=true; playBtn.innerHTML='❚❚'; startVisualizer(); }).catch(e=>showToast('⚠️ Playback error')); }
+    function togglePlay() { if(!audio.src) loadSong(0); if(isPlaying) { audio.pause(); playBtn.innerHTML='▶'; cancelAnimationFrame(animationFrame); } else { audio.play().catch(()=>showToast("Error")); playBtn.innerHTML='❚❚'; if(!animationFrame) startVisualizer(); } isPlaying=!isPlaying; }
     
-    function nextTrack() {
-      if (repeatMode === 1) { audio.currentTime = 0; audio.play(); return; }
-      let next = isShuffle ? Math.floor(Math.random() * songs.length) : currentIndex + 1;
-      if (next >= songs.length) next = (repeatMode === 2) ? 0 : currentIndex;
-      if (next === currentIndex && !isShuffle && repeatMode !== 2) { audio.pause(); isPlaying=false; playBtn.innerHTML = '▶️'; return; }
+    function handleTrackEnd() {
+      if(repeatMode===2) { audio.currentTime=0; audio.play(); return; }
+      let next = isShuffle ? Math.floor(Math.random()*songs.length) : currentSongIndex+1;
+      if(next >= songs.length) { if(repeatMode===0) { isPlaying=false; playBtn.innerHTML='▶'; return; } else next=0; }
       loadSong(next);
-      if (isPlaying) audio.play();
-    }
-    
-    function prevTrack() { 
-      let prev = isShuffle ? Math.floor(Math.random() * songs.length) : currentIndex -1;
-      if (prev < 0) prev = songs.length-1;
-      loadSong(prev);
       if(isPlaying) audio.play();
     }
+    function nextTrack() { handleTrackEnd(); }
+    function prevTrack() { let prev=isShuffle?Math.floor(Math.random()*songs.length):currentSongIndex-1; if(prev<0) prev=songs.length-1; loadSong(prev); if(isPlaying) audio.play(); }
     
-    function updateProgress() { if(audio.duration){ progress.value = (audio.currentTime/audio.duration)*100; currentTimeSpan.textContent = formatTime(audio.currentTime); durationSpan.textContent = formatTime(audio.duration); } }
-    function seekAudio() { audio.currentTime = (progress.value/100)*audio.duration; }
-    function formatTime(sec){ if(isNaN(sec)) return "0:00"; let m = Math.floor(sec/60), s = Math.floor(sec%60); return `${m}:${s<10?'0':''}${s}`; }
-    function changeVolume() { audio.volume = volumeSlider.value/100; lastVolume=audio.volume; isMuted=false; updateVolumeIcon(); }
-    function toggleMute() { isMuted = !isMuted; if(isMuted){ lastVolume=audio.volume; audio.volume=0; volumeSlider.value=0; } else { audio.volume=lastVolume; volumeSlider.value=lastVolume*100; } updateVolumeIcon(); }
-    function updateVolumeIcon() { volumeIcon.className = audio.volume===0 ? "fa-solid fa-volume-xmark cursor-pointer" : audio.volume<0.4? "fa-solid fa-volume-low cursor-pointer" : "fa-solid fa-volume-high cursor-pointer"; }
-    function toggleShuffle() { isShuffle=!isShuffle; document.getElementById('shuffleBtn').style.color=isShuffle?'#67e8f9':''; showToast(isShuffle?"Shuffle ON":"Shuffle OFF"); }
-    function toggleRepeat() { repeatMode=(repeatMode+1)%3; const color=['','#67e8f9','#f97316']; document.getElementById('repeatBtn').style.color=color[repeatMode]; showToast(['Repeat Off','Repeat All','Repeat One'][repeatMode]); }
-    function cycleEQ() { const presets=["Bass","Treble","Flat","Vocal"]; eqPreset=(eqPreset+1)%4; document.getElementById('eqBtn').innerText=presets[eqPreset]; if(eqPreset===0) audio.playbackRate=1.0; if(eqPreset===1) audio.playbackRate=1.05; if(eqPreset===2) audio.playbackRate=0.97; else audio.playbackRate=1.02; showToast(`${presets[eqPreset]} EQ active`); }
+    function toggleFavorite() { const s=songs[currentSongIndex]; const idx=favorites.findIndex(f=>f.id===s.id); if(idx>-1){ favorites.splice(idx,1); showToast("♡ Removed from favorites"); } else { favorites.push(s); showToast("❤️ Added to favorites"); } localStorage.setItem('bf_favs',JSON.stringify(favorites)); updateUI(); renderFavorites(); }
     
-    function toggleFavorite() { const song = songs[currentIndex]; const idx = favorites.findIndex(f=>f.id===song.id); if(idx>-1){ favorites.splice(idx,1); showToast(`♡ Removed from fav`); } else { favorites.push(song); showToast(`❤️ Added to Favorites`); } localStorage.setItem('bf_favs',JSON.stringify(favorites)); updateFavButton(); renderFavorites(); }
-    function updateFavButton() { const isFav = favorites.some(f=>f.id===songs[currentIndex].id); favBtn.innerHTML = isFav ? '❤️' : '♡'; }
+    function renderQueue() { const cont=document.getElementById('queueList'); cont.innerHTML=''; queue.forEach((song,i)=>{ const div=document.createElement('div'); div.className=`flex items-center gap-4 p-4 bg-zinc-900 rounded-3xl ${i===currentSongIndex?'playing':''}`; div.innerHTML=`<img src="${song.cover}" class="w-14 h-14 rounded-2xl object-cover"/><div class="flex-1"><div class="font-medium">${song.title}</div><div class="text-sm text-zinc-400">${song.artist}</div></div><button onclick="playFromQueue(${i})" class="px-6 py-2 bg-cyan-400 text-black rounded-2xl text-sm font-medium">Play</button>`; cont.appendChild(div); }); }
+    function playFromQueue(idx) { const song=queue[idx]; const realIndex=songs.findIndex(s=>s.id===song.id); if(realIndex!==-1) playSong(realIndex); }
+    function clearQueue() { queue=[]; renderQueue(); showToast("Queue emptied"); }
     
-    function renderSongGrid(container, songArray) { container.innerHTML = ''; songArray.forEach(song => { const div = document.createElement('div'); div.className = `song-card bg-zinc-900 rounded-2xl overflow-hidden cursor-pointer group`; div.innerHTML = `<div class="relative"><img src="${song.cover}" class="w-full aspect-square object-cover"/><div class="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition"><button onclick="event.stopPropagation(); addToQueueNow(songs.find(s=>s.id===${song.id}))" class="w-9 h-9 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">➕</button><button onclick="event.stopPropagation(); playById(${song.id})" class="w-9 h-9 bg-cyan-400 rounded-xl flex items-center justify-center shadow">▶️</button></div></div><div class="p-3"><div class="font-semibold truncate text-sm">${song.title}</div><div class="text-xs text-zinc-400 truncate">${song.artist}</div></div>`; div.onclick = () => playById(song.id); container.appendChild(div); }); }
-    function playById(id) { const idx = songs.findIndex(s=>s.id===id); if(idx!==-1){ loadSong(idx); audio.play().then(()=>{isPlaying=true; playBtn.innerHTML='⏸️'; startVisualizer();}).catch(()=>showToast("can't play")); } }
-    function addToQueueNow(song) { if(!queue.some(s=>s.id===song.id)) { queue.push(song); renderQueue(); showToast(`➕ "${song.title}" added to queue`); } }
-    function clearQueue() { queue = []; renderQueue(); showToast("Queue cleared"); }
-    function playFromQueue(index) { if(queue[index]){ const realIdx = songs.findIndex(s=>s.id===queue[index].id); if(realIdx!==-1) playById(realIdx); } }
-    function renderQueue() { const container = document.getElementById('queueList'); if(!container) return; container.innerHTML = ''; queue.forEach((song,i)=>{ const div = document.createElement('div'); div.className = `flex items-center gap-3 p-3 bg-zinc-900 rounded-2xl ${songs[currentIndex]?.id===song.id ? 'playing' : ''}`; div.innerHTML = `<img src="${song.cover}" class="w-12 h-12 rounded-xl object-cover"><div class="flex-1"><div class="font-medium">${song.title}</div><div class="text-xs text-zinc-400">${song.artist}</div></div><button onclick="playFromQueue(${i})" class="bg-cyan-500/30 px-4 py-1.5 rounded-xl text-sm">Play</button>`; container.appendChild(div); }); }
-    function autoNext() { 
-      if(queue.length>0){ const nextSong = queue.shift(); const idx=songs.findIndex(s=>s.id===nextSong.id); if(idx!==-1) loadSong(idx); renderQueue(); if(isPlaying) audio.play(); return; }
-      nextTrack();
-    }
-    
-    function renderLibraryAndHome() { renderSongGrid(document.getElementById('featuredGrid'), songs.slice(0,8)); renderRecentlyPlayed(); renderSongGrid(document.getElementById('libraryList'), songs); renderFavorites(); }
-    function renderRecentlyPlayed() { const container = document.getElementById('recentGrid'); if(container) renderSongGrid(container, recentlyPlayed.slice(0,8)); }
-    function renderFavorites() { const container = document.getElementById('favoritesList'); if(container) renderSongGrid(container, favorites); }
-    function updatePlayingHighlight() { renderLibraryAndHome(); renderQueue(); }
-    
-    function filterSongs() { const term = document.getElementById('globalSearch').value.toLowerCase(); const filtered = songs.filter(s=>s.title.toLowerCase().includes(term)||s.artist.toLowerCase().includes(term)); const libGrid = document.getElementById('libraryList'); if(libGrid && !document.getElementById('libraryTab').classList.contains('hidden')) renderSongGrid(libGrid, filtered); else if(document.getElementById('homeTab') && !document.getElementById('homeTab').classList.contains('hidden')){ renderSongGrid(document.getElementById('featuredGrid'), filtered.slice(0,8)); renderSongGrid(document.getElementById('recentGrid'), filtered.slice(0,8)); } }
-    
-    function switchTab(t) { document.querySelectorAll('.nav-item').forEach((el,i)=>el.classList.toggle('active', i===t)); document.querySelectorAll('.tab').forEach(tab=>tab.classList.add('hidden')); if(t===0) document.getElementById('homeTab').classList.remove('hidden'); if(t===1) { document.getElementById('libraryTab').classList.remove('hidden'); renderSongGrid(document.getElementById('libraryList'), songs); } if(t===2) { document.getElementById('favoritesTab').classList.remove('hidden'); renderFavorites(); } if(t===3) { document.getElementById('queueTab').classList.remove('hidden'); renderQueue(); } }
-    
-    function toggleMiniPlayer() { const mini = document.getElementById('miniPlayer'); mini.classList.toggle('hidden'); }
-    function showLyrics() { const modal = document.getElementById('lyricsModal'); const txt = songs[currentIndex].lyrics || "✨ vibe in progress ... ✨"; document.getElementById('lyricsText').innerHTML = `<span class="italic">${txt}</span>`; modal.classList.remove('hidden'); }
-    function hideLyrics() { document.getElementById('lyricsModal').classList.add('hidden'); }
-    function createPlaylist() { const name = prompt("Playlist name :)"); if(name) showToast(`📁 "${name}" created (demo)`); }
-    function toggleTheme() { document.body.classList.toggle('light'); const isDark = !document.body.classList.contains('light'); document.getElementById('themeIcon').className = isDark ? "fa-solid fa-moon" : "fa-solid fa-sun"; localStorage.setItem('theme', isDark ? 'dark' : 'light'); }
-    function startVisualizer() { const canvas = document.getElementById('visualizer'); if(!canvas) return; const ctx = canvas.getContext('2d'); function draw(){ if(!isPlaying && !audio.paused) requestAnimationFrame(draw); if(!isPlaying) return; ctx.clearRect(0,0,canvas.width,canvas.height); const barCount=48; const w=canvas.width/barCount; for(let i=0;i<barCount;i++){ let h=5+Math.random()*30*(isPlaying?1:0.2); ctx.fillStyle=`hsl(${190+i*3},80%,65%)`; ctx.fillRect(i*w,canvas.height-h,w-2,h); } requestAnimationFrame(draw); } draw(); }
-    function showToast(msg){ const t=document.createElement('div'); t.className='toast fixed bottom-28 left-1/2 -translate-x-1/2 bg-black/80 text-white px-5 py-2 rounded-full text-sm z-[200]'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2000); }
-    
-    document.getElementById('globalSearch').addEventListener('input', filterSongs);
-    document.getElementById('progressBar').addEventListener('input', seekAudio);
-    volumeSlider.addEventListener('input', changeVolume);
-    window.onload = () => { 
-      loadSong(0); 
-      audio.volume = 0.7;
-      if(localStorage.getItem('theme')==='light') toggleTheme();
-      renderLibraryAndHome(); 
-      renderQueue();
-      switchTab(0);
-      showToast("🎶 BeatFlow ready • Fluid audio");
-    };
+    function createSongElement(song) { const div=document.createElement('div'); div.className='song-card bg-zinc-900 rounded-3xl overflow-hidden cursor-pointer group'; div.innerHTML=`<div class="relative"><img src="${song.cover}" class="w-full aspect-square object-cover"/><div class="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition"><button onclick="event.stopPropagation(); addToQueue(songs.find(s=>s.id===${song.id}))" class="w-10 h-10 bg-white/90 hover:bg-white rounded-2xl flex items-center justify-center shadow">➕</button><button onclick="event.stopPropagation(); playSong(${song.id-1})" class="w-10 h-10 bg-cyan-400 rounded-2xl flex items-center justify-center shadow">▶</button></div></div><div class="p-5"><div class="font-semibold truncate">${song.title}</div><div class="text-sm text-zinc-400 truncate">${song.artist}</div></div>`; div.onclick=()=>playSong(song.id-1); return div; }
+    function addToQueue(song) { if(!queue.some(s=>s.id===song.id)) { queue.push(song); renderQueue(); showToast(`➕ "${song.title}" queued`); } }
+    function renderFeatured() { const g=document.getElementById('featuredGrid'); g.innerHTML=''; songs.forEach(s=>g.appendChild(createSongElement(s))); }
+    function renderRecentlyPlayed() { const g=document.getElementById('recentGrid'); g.innerHTML=''; recentlyPlayed.forEach(s=>g.appendChild(createSongElement(s))); }
+    function renderLibrary() { const g=document.getElementById('libraryList'); if(g) { g.innerHTML=''; songs.forEach(s=>g.appendChild(createSongElement(s))); } }
+    function renderFavorites() { const g=document.getElementById('favoritesList'); if(g) { g.innerHTML=favorites.length? '': '<p class="col-span-full text-center py-20 text-zinc-400">💔 No favorites yet. ❤️ some songs</p>'; favorites.forEach(s=>g.appendChild(createSongElement(s))); } }
+    function filterSongs() { const term=document.getElementById('searchInput').value.toLowerCase(); const filtered=songs.filter(s=>s.title.toLowerCase().includes(term)||s.artist.toLowerCase().includes(term)); const active=document.querySelector('.tab:not(.hidden)'); if(active && active.id==='libraryTab'){ const c=document.getElementById('libraryList'); c.innerHTML=''; filtered.forEach(s=>c.appendChild(createSongElement(s))); } }
+    function switchTab(t) { document.querySelectorAll('.nav-item').forEach((el,i)=>el.classList.toggle('active',i===t)); document.querySelectorAll('.tab').forEach(tab=>tab.classList.add('hidden')); if(t===0) document.getElementById('homeTab').classList.remove('hidden'); else if(t===1){ document.getElementById('libraryTab').classList.remove('hidden'); renderLibrary(); } else if(t===2){ document.getElementById('favoritesTab').classList.remove('hidden'); renderFavorites(); } else if(t===3){ document.getElementById('queueTab').classList.remove('hidden'); renderQueue(); } }
+    function createPlaylist() { const name=prompt("Playlist name?"); if(name) showToast(`✨ "${name}" created (demo)`); }
+    function toggleTheme() { const isDark=!document.body.classList.contains('light'); document.body.classList.toggle('light',!isDark); document.body.classList.toggle('dark',isDark); document.getElementById('themeIcon').className=isDark?'fa-solid fa-sun':'fa-solid fa-moon'; }
+    function toggleMiniPlayer() { const main=document.getElementById('mainPlayer'), mini=document.getElementById('miniPlayer'); main.classList.toggle('hidden'); mini.classList.toggle('hidden'); }
+    const demoLyrics=["🎵 Floating through neon lights...","Heartbeat syncing with the bass...","Lost in this endless dream...","We rise above the city glow...","Feel the rhythm take control..."];
+    function showLyrics() { const modal=document.getElementById('lyricsModal'), txt=document.getElementById('lyricsText'); modal.classList.remove('hidden'); let i=0; txt.innerHTML=demoLyrics[0]; const iv=setInterval(()=>{ i=(i+1)%demoLyrics.length; txt.innerHTML=demoLyrics[i]; },2200); modal.dataset.interval=iv; }
+    function hideLyrics() { const modal=document.getElementById('lyricsModal'); clearInterval(modal.dataset.interval); modal.classList.add('hidden'); }
+    function startVisualizer() { const c=document.getElementById('visualizer'); if(!c) return; const ctx=c.getContext('2d'); const w=c.width, h=c.height; const bars=40; function draw(){ if(!isPlaying && !audio.paused) requestAnimationFrame(draw); if(!isPlaying) return; ctx.clearRect(0,0,w,h); const barW=w/bars; for(let i=0;i<bars;i++){ let height=5+Math.random()*38*(isPlaying?1:0.2); ctx.fillStyle=`hsl(${190+i*3},80%,65%)`; ctx.fillRect(i*barW, h-height, barW-2, height); } animationFrame=requestAnimationFrame(draw); } draw(); }
+    document.addEventListener('keydown',e=>{ if(e.code==='Space'){ e.preventDefault(); togglePlay(); } if(e.code==='ArrowRight') audio.currentTime+=10; if(e.code==='ArrowLeft') audio.currentTime-=10; if(e.code==='ArrowUp'){ volumeSlider.value=Math.min(100,+volumeSlider.value+10); changeVolume(); } if(e.code==='ArrowDown'){ volumeSlider.value=Math.max(0,+volumeSlider.value-10); changeVolume(); } });
+    function init() { renderFeatured(); renderRecentlyPlayed(); switchTab(0); loadSong(0); audio.volume=0.75; volumeSlider.value=75; showToast("🎧 BeatFlow · 28 tracks · fluid playback"); }
+    window.onload = init;
   </script>
 </body>
 </html>
